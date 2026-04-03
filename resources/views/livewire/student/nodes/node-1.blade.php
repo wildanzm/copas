@@ -27,7 +27,7 @@
             <div
                 class="w-full max-w-2xl h-4 border border-gray-400 rounded-full bg-white relative overflow-hidden shadow-inner">
                 <!-- Progress Bar -->
-                <div class="h-full bg-gray-200 w-[15%]"></div>
+                <div class="h-full bg-[#99CB3A] w-[20%] transition-all duration-500 rounded-full"></div>
             </div>
         </div>
         <div class="w-8"></div> <!-- spacer to balance the X button -->

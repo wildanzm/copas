@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClassRoom;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
-use App\Models\ClassRoom;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 

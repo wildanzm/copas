@@ -2,9 +2,9 @@
 
 namespace App\Livewire\Teacher;
 
-use Livewire\Component;
-use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
+use Livewire\Component;
 
 #[Title('Teacher Dashboard')]
 #[Layout('layouts.app.teacher-sidebar')]

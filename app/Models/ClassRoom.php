@@ -12,6 +12,7 @@ class ClassRoom extends Model
     use HasFactory;
 
     protected $table = 'classes';
+
     protected $fillable = ['name', 'teacher_id'];
 
     public function teacher(): BelongsTo

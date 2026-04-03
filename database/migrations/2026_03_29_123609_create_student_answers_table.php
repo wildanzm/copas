@@ -13,7 +13,9 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('question_id')->constrained()->cascadeOnDelete();
             $table->text('answer_text');
+            $table->string('file_path')->nullable();
             $table->integer('score')->nullable();
+            $table->integer('xp_earned')->nullable();
             $table->timestamp('graded_at')->nullable();
             $table->timestamps();
 

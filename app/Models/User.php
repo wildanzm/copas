@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -18,7 +19,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable, TwoFactorAuthenticatable, HasRoles;
+    use HasFactory, HasRoles, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * Get the attributes that should be cast.
@@ -45,18 +46,30 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public function classRoom(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function classRoom(): BelongsTo
     {
         return $this->belongsTo(ClassRoom::class, 'class_id');
     }
 
-    public function progress(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function progress(): HasMany
     {
         return $this->hasMany(StudentProgress::class);
     }
 
-    public function answers(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function answers(): HasMany
     {
         return $this->hasMany(StudentAnswer::class);
+    }
+
+    public function studentAnswers(): HasMany
+    {
+        return $this->hasMany(StudentAnswer::class);
+    }
+
+    public function getLevelAttribute(): int
+    {
+        $totalXp = $this->studentAnswers()->sum('xp_earned');
+
+        return min(10, floor($totalXp / 100) + 1);
     }
 }
