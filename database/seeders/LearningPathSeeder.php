@@ -17,12 +17,24 @@ class LearningPathSeeder extends Seeder
     {
         DB::transaction(function (): void {
             // Node 1
-            Node::create([
+            $node1 = Node::create([
                 'title' => 'Dasar IPAS',
                 'description' => 'Pelajari dasar-dasar ilmu pengetahuan alam dan sosial.',
                 'type' => 'material',
                 'video_url' => 'https://youtu.be/h8jOOd6le30?si=ZS36vAtl8lgutyWe',
                 'order_index' => 1,
+            ]);
+            $node1->questions()->create([
+                'type' => 'essay',
+                'content' => 'Apa masalah utama yang terjadi pada video tersebut?',
+            ]);
+            $node1->questions()->create([
+                'type' => 'essay',
+                'content' => 'Apa saja dampak yang ditimbulkan dari peristiwa tersebut?',
+            ]);
+            $node1->questions()->create([
+                'type' => 'essay',
+                'content' => 'Menurut pendapatmu, apa yang menyebabkan kondisi tersebut bisa terjadi?',
             ]);
 
             // Node 2

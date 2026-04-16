@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Student;
 
 use App\Models\Node;
+use App\Models\StudentAnswer;
 use App\Models\StudentProgress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -24,6 +25,24 @@ class PlayRoom extends Component
     public array $answers = [];
 
     public $photo;
+
+    public bool $showModal = false;
+
+    public int $earnedXp = 0;
+
+    public int $correctCount = 0;
+
+    public int $incorrectCount = 0;
+
+    public bool $isLevelUp = false;
+
+    public int $newLevel = 1;
+
+    public int $oldLevel = 1;
+
+    public int $oldXp = 0;
+
+    public int $newXp = 0;
 
     public function mount(int $nodeId): void
     {
@@ -71,6 +90,48 @@ class PlayRoom extends Component
         );
     }
 
+    protected function saveStudentAnswers(?string $photoPath = null, array $xpPerQuestion = []): void
+    {
+        $userId = Auth::id();
+
+        foreach ($this->node->questions as $index => $question) {
+            $key = 'q'.($index + 1);
+            if (isset($this->answers[$key])) {
+                StudentAnswer::updateOrCreate(
+                    [
+                        'user_id' => $userId,
+                        'question_id' => $question->id,
+                    ],
+                    [
+                        'answer_text' => is_array($this->answers[$key]) ? json_encode($this->answers[$key]) : (string) $this->answers[$key],
+                        'file_path' => ($index === 0 && $photoPath) ? $photoPath : null,
+                        'xp_earned' => $xpPerQuestion[$index] ?? 0,
+                    ]
+                );
+            }
+        }
+    }
+
+    private function concludeNode(array $xpPerQuestion, string $flashMessage, ?string $photoPath = null): void
+    {
+        $user = Auth::user()->fresh();
+        $this->oldLevel = $user->level;
+        $this->oldXp = (int) $user->studentAnswers()->sum('xp_earned');
+
+        $this->saveStudentAnswers($photoPath, $xpPerQuestion);
+        $this->markNodeAsCompleted();
+
+        $user = $user->fresh();
+        $this->newLevel = $user->level;
+        $this->newXp = (int) $user->studentAnswers()->sum('xp_earned');
+
+        $this->earnedXp = array_sum($xpPerQuestion);
+        $this->isLevelUp = $this->newLevel > $this->oldLevel;
+        $this->showModal = true;
+
+        session()->flash('message', $flashMessage);
+    }
+
     public function submitNode1(): void
     {
         $this->validate([
@@ -81,12 +142,7 @@ class PlayRoom extends Component
             'answers.*.required' => 'Jawaban ini wajib diisi.',
         ]);
 
-        $this->markNodeAsCompleted();
-
-        // Logika untuk menyimpan answer ke DB (misal: StudentAnswer::create({...}))
-        // akan diletakan di sini.
-
-        session()->flash('message', 'Jawaban berhasil dikirim!');
+        $this->concludeNode([50, 50, 50], 'Jawaban berhasil dikirim!');
     }
 
     public function submitNode2(): void
@@ -102,11 +158,29 @@ class PlayRoom extends Component
 
         $this->validate($rules, $messages);
 
-        // Nanti Letakkan logika penyimpanan jawaban di sini.
+        $xpPerQuestion = [];
+        $correct = 0;
+        $incorrect = 0;
 
-        $this->markNodeAsCompleted();
+        foreach ($this->node->questions as $index => $question) {
+            $userAnswer = $this->answers['q'.($index + 1)] ?? null;
 
-        session()->flash('message', 'Kerja Bagus! Jawabanmu dikirim.');
+            // Check correctness against db options
+            $correctOption = $question->options->where('is_correct', true)->first();
+
+            if ($correctOption && $correctOption->option_text === $userAnswer) {
+                $correct++;
+                $xpPerQuestion[$index] = 20; // 100 max xp / 5
+            } else {
+                $incorrect++;
+                $xpPerQuestion[$index] = 0;
+            }
+        }
+
+        $this->correctCount = $correct;
+        $this->incorrectCount = $incorrect;
+
+        $this->concludeNode($xpPerQuestion, 'Kerja Bagus! Jawabanmu dikirim.');
     }
 
     public function submitNode3(): void
@@ -122,12 +196,8 @@ class PlayRoom extends Component
             'answers.q1.min' => 'Penjelasan observasi terlalu singkat.',
         ]);
 
-        // Logika untuk menyimpan answer ke DB (misal: StudentAnswer::create({...}))
-        // include $this->photo->store('observasi', 'public')
-
-        $this->markNodeAsCompleted();
-
-        session()->flash('message', 'Luar Biasa! Hasil observasimu berhasil dikirim.');
+        $photoPath = $this->photo->store('observasi', 'public');
+        $this->concludeNode([200], 'Luar Biasa! Hasil observasimu berhasil dikirim.', $photoPath);
     }
 
     public function submitNode4(): void
@@ -139,11 +209,7 @@ class PlayRoom extends Component
             'answers.*.required' => 'Jawaban ini wajib diisi.',
         ]);
 
-        // Simpan jawaban...
-
-        $this->markNodeAsCompleted();
-
-        session()->flash('message', 'Analisis yang Hebat! Jawabanmu tersimpan.');
+        $this->concludeNode([100, 100], 'Analisis yang Hebat! Jawabanmu tersimpan.');
     }
 
     public function submitNode5(): void
@@ -156,10 +222,7 @@ class PlayRoom extends Component
             'answers.*.required' => 'Jawaban ini wajib diisi.',
         ]);
 
-        // Simpan jawaban dan tandai selesai...
-        $this->markNodeAsCompleted();
-
-        session()->flash('message', 'Selamat! Kamu telah menyelesaikan semua misi.');
+        $this->concludeNode([50, 50, 50], 'Selamat! Kamu telah menyelesaikan semua misi.');
     }
 
     public function render(): View

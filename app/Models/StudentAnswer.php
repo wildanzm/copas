@@ -10,7 +10,7 @@ class StudentAnswer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'question_id', 'answer_text', 'score', 'graded_at'];
+    protected $fillable = ['user_id', 'question_id', 'answer_text', 'file_path', 'score', 'xp_earned', 'graded_at'];
 
     protected $casts = [
         'graded_at' => 'datetime',
