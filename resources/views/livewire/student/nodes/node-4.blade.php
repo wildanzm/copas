@@ -71,14 +71,25 @@
                 <p class="text-gray-900 font-medium text-sm md:text-base leading-relaxed">
                     Sekarang, perhatikan video berikut untuk melihat penjelasan tentang penyebab dan solusi permasalahan lingkungan.
                 </p>
-                @if ($this->getEmbedVideoUrl())
-                    <div class="w-full aspect-video rounded-xl overflow-hidden bg-black mt-2 shadow-inner">
-                        <iframe class="w-full h-full" src="{{ $this->getEmbedVideoUrl() }}" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen></iframe>
+                @if ($node->video_url)
+                    <div class="w-full aspect-video rounded-xl overflow-hidden bg-black mt-2 shadow-sm border border-gray-100 relative group">
+                        @php
+                            preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $node->video_url, $match);
+                            $videoId = $match[1] ?? '';
+                        @endphp
+                        @if($videoId)
+                            <img src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Video Thumbnail">
+                        @endif
+                        <a href="{{ $node->video_url }}" target="_blank" class="absolute inset-0 flex items-center justify-center z-10">
+                            <div class="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-8 h-8 md:w-10 md:h-10 ml-1">
+                                    <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </a>
                     </div>
                 @else
-                    <div class="w-full aspect-video bg-[#ff8c8c] rounded-xl flex items-center justify-center text-black font-bold mt-2 shadow-inner">
+                    <div class="w-full aspect-video bg-gray-200 rounded-xl flex items-center justify-center text-gray-500 font-medium mt-2 shadow-inner">
                         Video Tidak Tersedia
                     </div>
                 @endif
