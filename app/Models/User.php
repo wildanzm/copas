@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password', 'username', 'school', 'class_id'])]
+#[Fillable(['name', 'email', 'password', 'username', 'school', 'class_id', 'absen_number', 'gender', 'avatar'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {

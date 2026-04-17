@@ -57,9 +57,9 @@
 
                 <!-- Navigation -->
                 <nav class="mt-4 flex flex-col gap-3" :class="sidebarCollapsed ? 'px-4 lg:px-2' : 'px-4'">
-                    <!-- Dashboard (Active) -->
+                    <!-- Dashboard -->
                     <a href="{{ route('student.dashboard') }}"
-                        class="flex items-center gap-4 py-3.5 rounded-full bg-[#1A6DD2] text-white italic font-bold text-xl shadow-md transition-all group"
+                        class="flex items-center gap-4 py-3.5 rounded-full {{ request()->routeIs('student.dashboard') ? 'bg-[#1A6DD2] text-white' : 'hover:bg-[#1A6DD2]/50 text-white' }} italic font-bold text-xl transition-all group"
                         :class="sidebarCollapsed ? 'justify-center px-0 lg:w-16 lg:mx-auto' : 'px-6'">
                         <img src="{{ asset('assets/icons/dashboard/dashboard.png') }}"
                             class="w-8 h-8 object-contain shrink-0" alt="Dashboard">
@@ -68,8 +68,8 @@
                     </a>
 
                     <!-- Kuis -->
-                    <a href="#"
-                        class="flex items-center gap-4 py-3.5 rounded-full hover:bg-[#1A6DD2]/50 text-white italic font-bold text-xl transition-all group"
+                    <a href="{{ route('student.quiz.index') }}"
+                        class="flex items-center gap-4 py-3.5 rounded-full {{ request()->routeIs('student.quiz.*') ? 'bg-[#1A6DD2] text-white' : 'hover:bg-[#1A6DD2]/50 text-white' }} italic font-bold text-xl transition-all group"
                         :class="sidebarCollapsed ? 'justify-center px-0 lg:w-16 lg:mx-auto' : 'px-6'">
                         <img src="{{ asset('assets/icons/dashboard/kuis.png') }}"
                             class="w-8 h-8 object-contain shrink-0" alt="Kuis">
@@ -78,8 +78,8 @@
                     </a>
 
                     <!-- Peringkat -->
-                    <a href="#"
-                        class="flex items-center gap-4 py-3.5 rounded-full hover:bg-[#1A6DD2]/50 text-white italic font-bold text-xl transition-all group"
+                    <a href="{{ route('student.leaderboard.index') }}"
+                        class="flex items-center gap-4 py-3.5 rounded-full {{ request()->routeIs('student.leaderboard.index') ? 'bg-[#1A6DD2] text-white' : 'hover:bg-[#1A6DD2]/50 text-white' }} italic font-bold text-xl transition-all group"
                         :class="sidebarCollapsed ? 'justify-center px-0 lg:w-16 lg:mx-auto' : 'px-6'">
                         <img src="{{ asset('assets/icons/dashboard/peringkat.png') }}"
                             class="w-8 h-8 object-contain shrink-0" alt="Peringkat">
@@ -88,8 +88,8 @@
                     </a>
 
                     <!-- Profile -->
-                    <a href="#"
-                        class="flex items-center gap-4 py-3.5 rounded-full hover:bg-[#1A6DD2]/50 text-white italic font-bold text-xl transition-all group"
+                    <a href="{{ route('student.profile.index') }}"
+                        class="flex items-center gap-4 py-3.5 rounded-full {{ request()->routeIs('student.profile.*') ? 'bg-[#1A6DD2] text-white' : 'hover:bg-[#1A6DD2]/50 text-white' }} italic font-bold text-xl transition-all group"
                         :class="sidebarCollapsed ? 'justify-center px-0 lg:w-16 lg:mx-auto' : 'px-6'">
                         <img src="{{ asset('assets/icons/dashboard/profil.png') }}"
                             class="w-8 h-8 object-contain shrink-0" alt="Profile">
@@ -98,8 +98,8 @@
                     </a>
 
                     <!-- Tentang -->
-                    <a href="#"
-                        class="flex items-center gap-4 py-3.5 rounded-full hover:bg-[#1A6DD2]/50 text-white italic font-bold text-xl transition-all group"
+                    <a href="{{ route('student.tentang.index') }}"
+                        class="flex items-center gap-4 py-3.5 rounded-full {{ request()->routeIs('student.tentang.*') ? 'bg-[#1A6DD2] text-white' : 'hover:bg-[#1A6DD2]/50 text-white' }} italic font-bold text-xl transition-all group"
                         :class="sidebarCollapsed ? 'justify-center px-0 lg:w-16 lg:mx-auto' : 'px-6'">
                         <img src="{{ asset('assets/icons/dashboard/tentang.png') }}"
                             class="w-8 h-8 object-contain shrink-0" alt="Tentang">
