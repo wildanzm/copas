@@ -8,10 +8,10 @@ use Livewire\Component;
 
 #[Layout('layouts.app.student-sidebar')]
 #[Title('Copas | Tentang')]
-class TentangIndex extends Component
+class About extends Component
 {
     public function render()
     {
-        return view('livewire.student.tentang-index');
+        return view('livewire.student.about');
     }
 }

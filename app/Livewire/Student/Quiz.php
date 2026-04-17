@@ -11,7 +11,7 @@ use Livewire\Component;
 
 #[Layout('layouts.app.student-sidebar')]
 #[Title('Copas | Kuis')]
-class QuizIndex extends Component
+class Quiz extends Component
 {
     public function getIsCompletedProperty()
     {
@@ -92,7 +92,7 @@ class QuizIndex extends Component
 
     public function render()
     {
-        return view('livewire.student.quiz-index', [
+        return view('livewire.student.quiz', [
             'isCompleted' => $this->isCompleted,
             'finishedTime' => $this->finishedTime,
             'myScore' => $this->myScore,

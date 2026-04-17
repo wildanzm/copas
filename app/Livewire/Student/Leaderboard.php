@@ -10,7 +10,7 @@ use Livewire\Component;
 
 #[Layout('layouts.app.student-sidebar')]
 #[Title('Copas | Peringkat')]
-class LeaderboardIndex extends Component
+class Leaderboard extends Component
 {
     public function getLeaderboardProperty()
     {
@@ -52,7 +52,7 @@ class LeaderboardIndex extends Component
 
     public function render()
     {
-        return view('livewire.student.leaderboard-index', [
+        return view('livewire.student.leaderboard', [
             'leaderboard' => $this->leaderboard,
             'myRank' => $this->myRank,
             'level' => $this->studentLevel,

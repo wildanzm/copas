@@ -11,7 +11,7 @@ use Livewire\WithFileUploads;
 
 #[Layout('layouts.app.student-sidebar')]
 #[Title('Copas | Profile')]
-class ProfileIndex extends Component
+class Profile extends Component
 {
     use WithFileUploads;
 
@@ -67,7 +67,7 @@ class ProfileIndex extends Component
 
     public function render()
     {
-        return view('livewire.student.profile-index', [
+        return view('livewire.student.profile', [
             'classes' => ClassRoom::all(),
             'level' => $this->studentLevel,
             'xp' => $this->studentXp,
