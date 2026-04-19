@@ -16,11 +16,13 @@ class Profile extends Component
     use WithFileUploads;
 
     public $name;
+
     public $class_id;
-    public $absen_number;
+
     public $gender;
 
     public $avatar;
+
     public $storedAvatar;
 
     public function mount()
@@ -28,7 +30,6 @@ class Profile extends Component
         $user = Auth::user();
         $this->name = $user->name;
         $this->class_id = $user->class_id;
-        $this->absen_number = $user->absen_number;
         $this->gender = $user->gender;
         $this->storedAvatar = $user->avatar;
     }

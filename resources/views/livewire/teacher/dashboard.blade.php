@@ -19,7 +19,7 @@
 
         <div class="flex flex-col gap-2 w-full md:w-auto items-center md:items-start">
             <h1 class="text-2xl sm:text-3xl md:text-4xl font-black italic text-gray-900 tracking-wide">Selamat Datang
-                Teacher</h1>
+                {{ explode(' ', auth()->user()->name)[0] }}</h1>
             <p class="text-gray-800 text-sm md:text-base mb-2">Tujuan dan Materi Pembelajaran IPAS</p>
             <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                  <a href="{{ route('teacher.dashboard-detail') }}" wire:navigate
@@ -59,7 +59,7 @@
                                 </td>
                                 <td class="py-3 text-white font-semibold">{{ round($student->progress_percentage) }}%</td>
                                 <td class="py-3 text-right">
-                                    <a href="{{ route('teacher.dashboard-detail', ['student_id' => $student->id]) }}" class="text-[#FFE345] font-bold hover:underline">Periksa</a>
+                                    <a href="{{ route('teacher.answer-check', $student->id) }}" class="text-[#FFE345] font-bold hover:underline">Periksa</a>
                                 </td>
                             </tr>
                             @empty

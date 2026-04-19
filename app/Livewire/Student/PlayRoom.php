@@ -46,6 +46,14 @@ class PlayRoom extends Component
 
     public function mount(int $nodeId): void
     {
+        $completedNodes = \App\Models\StudentProgress::query()
+            ->where('user_id', Auth::id())
+            ->where('status', 'completed')
+            ->count();
+        $unlockedNode = $completedNodes + 1;
+        
+        abort_unless($nodeId <= $unlockedNode, 403, 'Anda belum membuka misi ini.');
+
         $this->node = Node::with('questions.options')->where('order_index', $nodeId)->firstOrFail();
     }
 

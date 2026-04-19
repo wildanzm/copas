@@ -23,6 +23,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('guru')->name('teacher.')->g
     Route::get('peringkat', Teacher\Leaderboard::class)->name('leaderboard');
     Route::get('profil', Teacher\Profile::class)->name('profile');
     Route::get('tentang', Teacher\About::class)->name('about');
+    Route::get('jawaban/{student}', Teacher\AnswerCheck::class)->name('answer-check');
 });
 
 require __DIR__.'/settings.php';

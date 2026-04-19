@@ -9,7 +9,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('absen_number')->nullable();
             $table->string('gender')->nullable();
             $table->string('avatar')->nullable();
         });
@@ -18,7 +17,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['absen_number', 'gender', 'avatar']);
+            $table->dropColumn(['gender', 'avatar']);
         });
     }
 };

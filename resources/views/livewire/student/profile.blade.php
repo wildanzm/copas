@@ -282,30 +282,7 @@
                         @enderror
                     </div>
 
-                    <div>
-                        <label class="block text-gray-800 font-bold text-lg mb-2">Nomor Absen</label>
-                        <div class="relative">
-                            <input type="number" wire:model="absen_number" disabled
-                                class="w-full border-2 border-gray-300 rounded-md px-4 py-3 text-gray-500 font-medium bg-gray-100 cursor-not-allowed appearance-none m-0 focus:outline-none"
-                                style="-webkit-appearance: none;">
-                            <div
-                                class="pointer-events-none absolute inset-y-0 right-0 flex flex-col items-center justify-center px-4 text-gray-400">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                        d="M5 15l7-7 7 7"></path>
-                                </svg>
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
-                                        d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                            </div>
-                        </div>
-                        @error('absen_number')
-                            <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                        @enderror
-                    </div>
+
 
                     <div>
                         <label class="block text-gray-800 font-bold text-lg mb-2">Jenis Kelamin</label>
@@ -313,8 +290,8 @@
                             <select wire:model="gender" disabled
                                 class="w-full border-2 border-gray-300 rounded-md px-4 py-3 text-gray-500 font-medium appearance-none bg-gray-100 cursor-not-allowed focus:outline-none">
                                 <option value="">Pilih Jenis Kelamin</option>
-                                <option value="LAKI-LAKI">LAKI-LAKI</option>
-                                <option value="PEREMPUAN">PEREMPUAN</option>
+                                <option value="Laki-laki">Laki-laki</option>
+                                <option value="Perempuan">Perempuan</option>
                             </select>
                             <div
                                 class="pointer-events-none absolute inset-y-0 right-0 flex flex-col items-center justify-center px-4 text-gray-400">

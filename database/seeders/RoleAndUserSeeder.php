@@ -44,6 +44,7 @@ class RoleAndUserSeeder extends Seeder
             'school' => 'SD Negeri 1',
             'password' => Hash::make('siswa123'),
             'class_id' => $classroom->id,
+            'gender' => 'Laki-laki',
         ]);
         $student->assignRole($studentRole);
     }

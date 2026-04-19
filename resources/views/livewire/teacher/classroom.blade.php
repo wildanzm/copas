@@ -1,3 +1,3 @@
-<div>
-    {{-- People find pleasure in different ways. I find it in keeping my mind clear. - Marcus Aurelius --}}
+<div class="px-8 py-10 bg-[#E8F2FC] min-h-screen">
+    <livewire:teacher.student />
 </div>
