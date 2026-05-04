@@ -15,20 +15,20 @@ class Quiz extends Component
 {
     public function getStudentAnswersProperty()
     {
+        // Eager load only the necessary student answers by using whereHas on the relationship
         $students = User::role('student')->with(['studentAnswers' => function ($query) {
             $query->whereHas('question', function ($q) {
                 $q->where('type', 'final_quiz');
             });
         }])->get();
 
-        return $students->map(function ($student) {
-            $answers = $student->studentAnswers()
-                ->whereHas('question', function ($q) {
-                    $q->where('type', 'final_quiz');
-                })
-                ->get();
+        // Query total questions only ONCE
+        $totalQuestions = Question::where('type', 'final_quiz')->count();
 
-            $totalQuestions = Question::where('type', 'final_quiz')->count();
+        return $students->map(function ($student) use ($totalQuestions) {
+            // Use the ALREADY eagerly loaded relationship instead of a new query
+            $answers = $student->studentAnswers;
+
             $hasAnswers = $answers->isNotEmpty();
             $correctCount = $answers->where('xp_earned', '>', 0)->count();
             $score = $hasAnswers ? ($totalQuestions > 0 ? round(($correctCount / $totalQuestions) * 100) : 0) : '-';
@@ -54,6 +54,8 @@ class Quiz extends Component
 
     public function getAverageTimeProperty()
     {
+        // For average time, we could theoretically use the already fetched student answers, 
+        // but since this is an isolated property getter, we'll keep the DB query but make it efficient.
         $answers = StudentAnswer::whereHas('question', function ($q) {
             $q->where('type', 'final_quiz');
         })->get();

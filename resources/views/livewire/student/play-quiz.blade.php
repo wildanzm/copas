@@ -296,6 +296,9 @@
 
                 clearInterval(this.timerInterval);
                 this.result = await this.$wire.submitQuiz(this.answers, this.timeSpent);
+                
+                // Close the loading alert when finished
+                Swal.close();
 
                 localStorage.removeItem('quiz_answers');
                 localStorage.removeItem('quiz_timespent');

@@ -39,82 +39,84 @@ class PlayQuiz extends Component
 
     public function submitQuiz($answers, $timeSpent)
     {
-        $user = Auth::user();
-        $oldLevel = $user->level;
+        return \Illuminate\Support\Facades\DB::transaction(function () use ($answers, $timeSpent) {
+            $user = Auth::user();
+            
+            // Get question IDs once to avoid repeated whereHas queries
+            $questionIds = collect($this->questions)->pluck('id')->toArray();
+            
+            // Get current level and best XP in fewer queries
+            $oldLevel = $user->level;
+            $currentBestXp = (int) $user->studentAnswers()
+                ->whereIn('question_id', $questionIds)
+                ->sum('xp_earned');
 
-        // Get current best XP for final quiz
-        $currentBestXp = (int) $user->studentAnswers()->whereHas('question', function ($q) {
-            $q->where('type', 'final_quiz');
-        })->sum('xp_earned');
+            $newEarnedXp = 0;
+            $correctCount = 0;
+            $incorrectCount = 0;
+            $maxPossibleXpPerQuestion = 10;
+            $newAnswers = [];
 
-        $newEarnedXp = 0;
-        $correctCount = 0;
-        $incorrectCount = 0;
-        $maxPossibleXpPerQuestion = 10;
+            foreach ($this->questions as $q) {
+                $answerOptionId = $answers[$q['id']] ?? null;
+                $xp = 0;
+                $isCorrect = false;
 
-        // Temporarily store the results to decide later if we save them
-        $newAnswers = [];
-
-        foreach ($this->questions as $q) {
-            $answerOptionId = $answers[$q['id']] ?? null;
-            $xp = 0;
-            $isCorrect = false;
-
-            if ($answerOptionId) {
-                foreach ($q['options'] as $opt) {
-                    if ($opt['id'] == $answerOptionId && $opt['is_correct']) {
-                        $xp = $maxPossibleXpPerQuestion;
-                        $isCorrect = true;
-                        break;
+                if ($answerOptionId) {
+                    foreach ($q['options'] as $opt) {
+                        if ($opt['id'] == $answerOptionId && $opt['is_correct']) {
+                            $xp = $maxPossibleXpPerQuestion;
+                            $isCorrect = true;
+                            break;
+                        }
                     }
                 }
+
+                if ($isCorrect) {
+                    $correctCount++;
+                } else {
+                    $incorrectCount++;
+                }
+
+                $newEarnedXp += $xp;
+
+                $newAnswers[] = [
+                    'user_id' => $user->id,
+                    'question_id' => $q['id'],
+                    'answer_text' => $answerOptionId ? (string) $answerOptionId : null,
+                    'xp_earned' => $xp,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
 
-            if ($isCorrect) {
-                $correctCount++;
-            } else {
-                $incorrectCount++;
+            // Only save to DB if the new score is better than or equal to the previous best
+            if ($newEarnedXp >= $currentBestXp) {
+                $user->studentAnswers()
+                    ->whereIn('question_id', $questionIds)
+                    ->delete();
+
+                // Batch insert for performance
+                StudentAnswer::insert($newAnswers);
             }
 
-            $newEarnedXp += $xp;
+            // Refresh user and get final results
+            $user->refresh();
+            $newLevel = $user->level;
 
-            $newAnswers[] = [
-                'user_id' => $user->id,
-                'question_id' => $q['id'],
-                'answer_text' => $answerOptionId ? (string) $answerOptionId : null,
-                'xp_earned' => $xp,
-                'created_at' => now(),
-                'updated_at' => now(),
+            return [
+                'score' => round(($newEarnedXp / (count($this->questions) * 10)) * 100),
+                'correctCount' => $correctCount,
+                'incorrectCount' => $incorrectCount,
+                'earnedXp' => $newEarnedXp,
+                'timeSpent' => $timeSpent,
+                'totalXp' => $user->studentAnswers()->sum('xp_earned'),
+                'level' => $newLevel,
+                'isLevelUp' => $newLevel > $oldLevel,
+                'oldLevel' => $oldLevel,
+                'isNewBest' => $newEarnedXp > $currentBestXp,
             ];
-        }
-
-        // Only save to DB if the new score is better than or equal to the previous best
-        // Using >= so that if they get the same score, it's still "saved" as the latest attempt
-        if ($newEarnedXp >= $currentBestXp) {
-            $user->studentAnswers()->whereHas('question', function ($q) {
-                $q->where('type', 'final_quiz');
-            })->delete();
-
-            foreach ($newAnswers as $ans) {
-                StudentAnswer::create($ans);
-            }
-        }
-
-        $user = $user->fresh();
-        $newLevel = $user->level;
-
-        return [
-            'score' => round(($newEarnedXp / (count($this->questions) * 10)) * 100),
-            'correctCount' => $correctCount,
-            'incorrectCount' => $incorrectCount,
-            'earnedXp' => $newEarnedXp,
-            'timeSpent' => $timeSpent,
-            'totalXp' => $user->studentAnswers()->sum('xp_earned'),
-            'level' => $newLevel,
-            'isLevelUp' => $newLevel > $oldLevel,
-            'oldLevel' => $oldLevel,
-            'isNewBest' => $newEarnedXp > $currentBestXp,
-        ];
+        });
     }
 
     public function render()

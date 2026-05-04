@@ -49,16 +49,37 @@ class Dashboard extends Component
     public function getQuizStatsProperty()
     {
         $studentIds = $this->studentIds;
+        $totalQuestions = \App\Models\Question::where('type', 'final_quiz')->count() ?: 1;
+        $maxPossibleXp = $totalQuestions * 10;
 
-        $avgScore = StudentAnswer::whereIn('user_id', $studentIds)->avg('score') ?? 0;
-        $minScore = StudentAnswer::whereIn('user_id', $studentIds)->min('score') ?? 0;
-        $maxScore = StudentAnswer::whereIn('user_id', $studentIds)->max('score') ?? 0;
+        // Get total xp per user for final quiz questions
+        $userScores = StudentAnswer::whereIn('user_id', $studentIds)
+            ->whereHas('question', function ($q) {
+                $q->where('type', 'final_quiz');
+            })
+            ->selectRaw('user_id, SUM(xp_earned) as total_xp')
+            ->groupBy('user_id')
+            ->get();
+
+        if ($userScores->isEmpty()) {
+            return [
+                'avg_time' => '00:00',
+                'avg_score' => 0,
+                'min_score' => 0,
+                'max_score' => 0,
+            ];
+        }
+        
+        // Convert total_xp to percentage: score = (total_xp / (totalQuestions * 10)) * 100
+        $percentages = $userScores->map(function ($score) use ($maxPossibleXp) {
+            return round(($score->total_xp / $maxPossibleXp) * 100);
+        });
 
         return [
             'avg_time' => '12:45', // static for now as no duration field exists
-            'avg_score' => round($avgScore, 1),
-            'min_score' => round($minScore, 1),
-            'max_score' => round($maxScore, 1),
+            'avg_score' => round($percentages->avg(), 1),
+            'min_score' => round($percentages->min(), 1),
+            'max_score' => round($percentages->max(), 1),
         ];
     }
 

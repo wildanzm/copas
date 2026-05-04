@@ -51,23 +51,29 @@ class BankSoal extends Component
 
     public function addQuestion()
     {
-        $newQuestion = Question::create([
-            'type' => 'final_quiz',
-            'content' => 'Pertanyaan baru...',
-            'image_settings' => [
-                'width' => 100,
-                'rotation' => 0,
-                'position' => 'center',
-            ],
-        ]);
-
-        for ($i = 0; $i < 4; $i++) {
-            QuestionOption::create([
-                'question_id' => $newQuestion->id,
-                'option_text' => 'Pilihan ' . ($i + 1),
-                'is_correct' => $i === 0,
+        \Illuminate\Support\Facades\DB::transaction(function () {
+            $newQuestion = Question::create([
+                'type' => 'final_quiz',
+                'content' => 'Pertanyaan baru...',
+                'image_settings' => [
+                    'width' => 100,
+                    'rotation' => 0,
+                    'position' => 'center',
+                ],
             ]);
-        }
+
+            $options = [];
+            for ($i = 0; $i < 4; $i++) {
+                $options[] = [
+                    'question_id' => $newQuestion->id,
+                    'option_text' => 'Pilihan ' . ($i + 1),
+                    'is_correct' => $i === 0,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+            QuestionOption::insert($options);
+        });
 
         $this->loadQuestions();
         
@@ -98,8 +104,10 @@ class BankSoal extends Component
 
     public function setCorrectOption($questionId, $optionId)
     {
-        QuestionOption::where('question_id', $questionId)->update(['is_correct' => false]);
-        QuestionOption::where('id', $optionId)->update(['is_correct' => true]);
+        \Illuminate\Support\Facades\DB::transaction(function () use ($questionId, $optionId) {
+            QuestionOption::where('question_id', $questionId)->update(['is_correct' => false]);
+            QuestionOption::where('id', $optionId)->update(['is_correct' => true]);
+        });
 
         $this->loadQuestions();
     }
@@ -151,8 +159,10 @@ class BankSoal extends Component
     {
         $question = Question::find($questionId);
         if ($question) {
-            $question->options()->delete();
-            $question->delete();
+            \Illuminate\Support\Facades\DB::transaction(function () use ($question) {
+                $question->options()->delete();
+                $question->delete();
+            });
             
             $this->loadQuestions();
             
