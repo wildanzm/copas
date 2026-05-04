@@ -5,8 +5,7 @@
             <p class="text-black text-sm">Bergabung dan Mulai Mengatur Kelas</p>
         </div>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4" :status="session('status')" />
+        {{-- Validation errors and session status are handled globally via SweetAlert in the layout --}}
 
         <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-4">
             @csrf
@@ -22,7 +21,7 @@
                 </div>
                 <input id="name" name="name" type="text" value="{{ old('name') }}" required autofocus
                     autocomplete="name" placeholder="Nama"
-                    class="block w-full pl-10 pr-4 py-3 border border-gray-500 bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
+                    class="block w-full pl-10 pr-4 py-3 border {{ $errors->has('name') ? 'border-red-500' : 'border-gray-500' }} bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
             </div>
 
             <!-- Username -->
@@ -36,7 +35,7 @@
                 </div>
                 <input id="username" name="username" type="text" value="{{ old('username') }}" required
                     autocomplete="username" placeholder="Nama Pengguna"
-                    class="block w-full pl-10 pr-4 py-3 border border-gray-500 bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
+                    class="block w-full pl-10 pr-4 py-3 border {{ $errors->has('username') ? 'border-red-500' : 'border-gray-500' }} bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
             </div>
 
             <!-- Email Address -->
@@ -51,7 +50,7 @@
                 </div>
                 <input id="email" name="email" type="email" value="{{ old('email') }}" required
                     autocomplete="email" placeholder="E-Mail"
-                    class="block w-full pl-10 pr-4 py-3 border border-gray-500 bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
+                    class="block w-full pl-10 pr-4 py-3 border {{ $errors->has('email') ? 'border-red-500' : 'border-gray-500' }} bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
             </div>
 
             <!-- Password & Confirmation -->
@@ -66,7 +65,7 @@
                     </div>
                     <input id="password" name="password" type="password" required autocomplete="new-password"
                         placeholder="Sandi"
-                        class="block w-full pl-10 pr-4 py-3 border border-gray-500 bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
+                        class="block w-full pl-10 pr-4 py-3 border {{ $errors->has('password') ? 'border-red-500' : 'border-gray-500' }} bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
                 </div>
                 <div class="relative w-full">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
@@ -78,9 +77,12 @@
                     </div>
                     <input id="password_confirmation" name="password_confirmation" type="password" required
                         autocomplete="new-password" placeholder="Konfirmasi Sandi"
-                        class="block w-full pl-10 pr-4 py-3 border border-gray-500 bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
+                        class="block w-full pl-10 pr-4 py-3 border {{ $errors->has('password_confirmation') ? 'border-red-500' : 'border-gray-500' }} bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
                 </div>
             </div>
+            <p class="-mt-2 text-xs text-gray-500">
+                Sandi minimal 8 karakter.
+            </p>
 
             <!-- School -->
             <div class="relative w-full mb-2">
@@ -94,7 +96,7 @@
                 </div>
                 <input id="school" name="school" type="text" value="{{ old('school') }}" required
                     placeholder="Sekolah"
-                    class="block w-full pl-10 pr-4 py-3 border border-gray-500 bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
+                    class="block w-full pl-10 pr-4 py-3 border {{ $errors->has('school') ? 'border-red-500' : 'border-gray-500' }} bg-transparent rounded-lg text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FF8A3D] focus:border-[#FF8A3D] text-sm">
             </div>
 
             <!-- Terms & Conditions - Completely native and responsive -->

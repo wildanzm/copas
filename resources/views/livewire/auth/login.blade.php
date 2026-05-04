@@ -2,8 +2,7 @@
     <div class="flex flex-col gap-6 w-full">
         <x-auth-header title="Masuk Akun!" description="Selamat Datang Kembali Teman" />
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+        {{-- Validation errors and session status are handled globally via SweetAlert in the layout --}}
 
         <form method="POST" action="{{ route('login.store') }}" class="flex flex-col gap-4">
             @csrf
@@ -19,8 +18,11 @@
                 </div>
                 <input id="login" name="login" type="text" value="{{ old('login') }}" required autofocus
                     autocomplete="off" placeholder="Nama Pengguna"
-                    class="block w-full pl-10 pr-3 py-3 border border-gray-400 bg-transparent rounded-md text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FA8B43] focus:border-[#FA8B43] sm:text-lg font-medium">
+                    class="block w-full pl-10 pr-3 py-3 border {{ $errors->has('login') || $errors->has('email') ? 'border-red-500' : 'border-gray-400' }} bg-transparent rounded-md text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FA8B43] focus:border-[#FA8B43] sm:text-lg font-medium">
             </div>
+            @if ($errors->has('login') || $errors->has('email'))
+                <p class="-mt-2 text-xs text-red-600">{{ $errors->first('login') ?: $errors->first('email') }}</p>
+            @endif
 
             <!-- Password -->
             <div class="relative">
@@ -33,8 +35,11 @@
                 </div>
                 <input id="password" name="password" type="password" required autocomplete="current-password"
                     placeholder="Kata Sandi"
-                    class="block w-full pl-10 pr-3 py-3 border border-gray-400 bg-transparent rounded-md text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FA8B43] focus:border-[#FA8B43] sm:text-lg font-medium">
+                    class="block w-full pl-10 pr-3 py-3 border {{ $errors->has('password') ? 'border-red-500' : 'border-gray-400' }} bg-transparent rounded-md text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-[#FA8B43] focus:border-[#FA8B43] sm:text-lg font-medium">
             </div>
+            @error('password')
+                <p class="-mt-2 text-xs text-red-600">{{ $message }}</p>
+            @enderror
 
             @if (Route::has('password.request'))
                 <div class="flex justify-end">

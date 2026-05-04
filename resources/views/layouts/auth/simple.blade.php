@@ -3,6 +3,7 @@
 
 <head>
     @include('partials.head')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             background-color: transparent !important;
@@ -38,6 +39,36 @@
         </div>
     </div>
     @fluxScripts
+
+    @if ($errors->any())
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const messages = @json($errors->all());
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Terjadi Kesalahan',
+                    html: '<ul style="text-align:left;margin:0;padding-left:1.2em">' + messages.map(m => `<li>${m}</li>`).join('') + '</ul>',
+                    confirmButtonText: 'Tutup',
+                    confirmButtonColor: '#FF8A3D',
+                    customClass: { popup: 'swal-auth-popup' },
+                });
+            });
+        </script>
+    @elseif (session('status'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil!',
+                    text: @json(session('status')),
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#FF8A3D',
+                    timer: 4000,
+                    timerProgressBar: true,
+                });
+            });
+        </script>
+    @endif
 </body>
 
 </html>
