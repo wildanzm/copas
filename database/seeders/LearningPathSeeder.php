@@ -95,20 +95,33 @@ class LearningPathSeeder extends Seeder
 
             // Node 5
             $node5 = Node::create([
-                'title' => 'Ayo Lakukan Refleksi',
-                'description' => 'Refleksikan apa yang telah dipelajari hari ini.',
-                'type' => 'quiz',
+                'title' => 'ALAM BERUBAH, KITA WASPADA!',
+                'description' => 'Pahami bagaimana lingkungan kita berubah dan apa dampaknya bagi kita.',
+                'type' => 'material',
+                'video_url' => 'https://youtu.be/iETBlRpbwEE',
                 'order_index' => 5,
             ]);
             $node5->questions()->create([
                 'type' => 'essay',
+                'content' => 'Tuliskan satu kegiatan yang bisa kamu lakukan di sekolah untuk membantu mengurangi pencemaran lingkungan atau mungkin mencegah bencana lainnya!',
+            ]);
+
+            // Node 6
+            $node6 = Node::create([
+                'title' => 'Ayo Lakukan Refleksi',
+                'description' => 'Refleksikan apa yang telah dipelajari hari ini.',
+                'type' => 'quiz',
+                'order_index' => 6,
+            ]);
+            $node6->questions()->create([
+                'type' => 'essay',
                 'content' => 'Apa hal baru yang kamu pelajari hari ini?',
             ]);
-            $node5->questions()->create([
+            $node6->questions()->create([
                 'type' => 'essay',
                 'content' => 'Mengapa menjaga lingkungan itu penting?',
             ]);
-            $node5->questions()->create([
+            $node6->questions()->create([
                 'type' => 'essay',
                 'content' => 'Apa yang akan kamu lakukan mulai sekarang untuk menjaga lingkungan?',
             ]);

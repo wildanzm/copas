@@ -117,7 +117,7 @@
                     <div class="w-14 h-14 md:w-16 md:h-16 bg-[#E8F2FC] rounded-full flex items-center justify-center shrink-0">
                         <img src="{{ asset('assets/icons/etc/nice-job.png') }}" alt="Nice Job" class="w-8 h-8 md:w-10 md:h-10 object-contain">
                     </div>
-                    <span class="font-black text-xl md:text-2xl text-black tracking-wide">Nice Job!</span>
+                    <span class="font-black text-xl md:text-2xl text-black tracking-wide">Luar biasa!</span>
                 </div>
                 <a href="{{ route('student.play-room', ['nodeId' => 5]) }}" wire:navigate
                     class="px-8 py-3 bg-[#99CB3A] hover:bg-[#8ab830] transition text-black font-black rounded shadow tracking-widest text-sm md:text-base cursor-pointer text-center w-full sm:w-auto">

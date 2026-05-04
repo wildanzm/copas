@@ -70,6 +70,10 @@ class User extends Authenticatable
     {
         $totalXp = $this->studentAnswers()->sum('xp_earned');
 
-        return (int) min(10, floor($totalXp / 100) + 1);
+        if ($totalXp <= 100) {
+            return 1;
+        }
+
+        return (int) min(10, floor(($totalXp - 1) / 100) + 1);
     }
 }

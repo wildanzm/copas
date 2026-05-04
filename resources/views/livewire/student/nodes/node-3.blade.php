@@ -57,28 +57,16 @@
         <div class="text-gray-900 mb-8 max-w-2xl text-sm md:text-base leading-relaxed">
             <h2 class="font-black text-lg md:text-xl mb-2">Instruksi</h2>
             <p>Lakukan kegiatan berikut dengan tertib:</p>
-            <ol class="list-decimal pl-5 space-y-1 mb-4 font-medium">
+            <ol class="list-decimal pl-5 space-y-1 mb-2 font-medium">
                 <li>Perhatikan lingkungan di sekitar atau dapat mencarinya di internet.</li>
-                <li>Pilih tempat yang menurutmu menarik untuk diamati.</li>
+                <li>Cari lingkungan yang menurut kamu kotor atau tidak bersih</li>
                 <li>Ambil satu foto kondisi lingkungan tersebut dan upload</li>
-                <li>Jelaskan gambar tersebut.</li>
+                <li>Kemudian berikan penjelasan.</li>
             </ol>
 
-            <div class="pl-4 border-l-4 border-[#99CB3A] ml-2 space-y-4">
-                <div>
-                    <h3 class="font-black">Jika lingkungan KOTOR</h3>
-                    <ul class="list-disc pl-5 font-medium">
-                        <li>Jelaskan penyebab dan dampak lingkungan kotor tersebut dan berikan solusinya.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="font-black">Jika Lingkungan BERSIH</h3>
-                    <ul class="list-disc pl-5 font-medium">
-                        <li>Jelaskan mengapa lingkungan tersebut tetap bersih dan bagaimana cara menjaga lingkungan
-                            tetap bersih.</li>
-                    </ul>
-                </div>
-            </div>
+            <ul class="list-disc pl-9 font-medium space-y-1">
+                <li>Jelaskan penyebab dan dampak lingkungan kotor tersebut dan berikan solusinya.</li>
+            </ul>
         </div>
 
         <!-- Mobile Character (since hidden above) -->
@@ -126,8 +114,8 @@
             <div class="flex flex-col gap-3">
                 <label class="text-gray-900 font-extrabold text-lg md:text-xl">Penjelasan</label>
                 <textarea wire:model="answers.q1" rows="5"
-                    class="w-full p-5 rounded-2xl border-0 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2072d8] bg-white text-gray-800 font-medium text-sm md:text-base resize-y"
-                    placeholder="Hasil pengamatanku..."></textarea>
+                    class="w-full p-5 rounded-2xl border-0 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#2072d8] bg-white text-gray-800 font-medium text-sm md:text-base resize-y placeholder:italic"
+                    placeholder="Jawaban"></textarea>
                 @error('answers.q1')
                     <span class="text-red-500 text-sm font-bold">{{ $message }}</span>
                 @enderror
@@ -146,7 +134,8 @@
                         <img src="{{ asset('assets/icons/etc/nice-job.png') }}" alt="Nice Job"
                             class="w-8 h-8 md:w-10 md:h-10 object-contain">
                     </div>
-                    <span class="font-black text-xl md:text-2xl text-black tracking-wide">Nice Job!</span>
+                    <span class="font-black text-xl md:text-2xl text-black tracking-wide">Teruskan semangat
+                        belajarmu!</span>
                 </div>
                 <a href="{{ route('student.play-room', ['nodeId' => 4]) }}" wire:navigate
                     class="px-8 py-3 bg-[#99CB3A] hover:bg-[#8ab830] transition text-black font-black rounded shadow tracking-widest text-sm md:text-base cursor-pointer text-center w-full sm:w-auto">

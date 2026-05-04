@@ -37,13 +37,14 @@ class Quiz extends Component
             $q->where('type', 'final_quiz');
         })->sum('xp_earned');
 
-        $maxPossibleXp = 200;
+        $totalQuestions = \App\Models\Question::where('type', 'final_quiz')->count();
+        $maxPossibleXp = $totalQuestions * 10;
 
-        if ($xp > 0) {
-            return round(($xp / $maxPossibleXp) * 100, 1) . '%';
+        if ($xp > 0 && $maxPossibleXp > 0) {
+            return round(($xp / $maxPossibleXp) * 100).'%';
         }
 
-        return '0';
+        return '0%';
     }
 
     public function getHighestScoreProperty()
@@ -60,10 +61,11 @@ class Quiz extends Component
             ->first()
             ->total_final_xp ?? 0;
 
-        $maxPossibleXp = 200;
+        $totalQuestions = \App\Models\Question::where('type', 'final_quiz')->count();
+        $maxPossibleXp = $totalQuestions * 10;
 
-        if ($highestXp > 0) {
-            return round(($highestXp / max(1, $maxPossibleXp)) * 100, 1) . '%';
+        if ($highestXp > 0 && $maxPossibleXp > 0) {
+            return round(($highestXp / $maxPossibleXp) * 100).'%';
         }
 
         return '0%';
@@ -81,13 +83,7 @@ class Quiz extends Component
 
     public function startQuiz()
     {
-        if ($this->isCompleted) {
-            $this->addError('general', 'Kamu sudah mengerjakan kuis ini.');
-            return;
-        }
-
-        // Redirect to actual quiz page when implemented, for now just simple redirect
-        // return redirect()->route('student.quiz.play');
+        return redirect()->route('student.quiz.play');
     }
 
     public function render()

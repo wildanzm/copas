@@ -21,26 +21,34 @@
     </div>
 
     <!-- Main Panduan Card -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-8 mb-8 relative">
-        <h2 class="text-3xl font-extrabold italic text-black mb-4 tracking-tight">Panduan</h2>
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-8 md:p-10 mb-8 relative">
+        <h2 class="text-2xl font-extrabold italic text-black mb-6 tracking-tight">Panduan Kuis</h2>
 
-        <p class="text-gray-800 text-lg mb-8 leading-relaxed font-medium">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
+        <p class="text-gray-800 text-base md:text-lg mb-6 leading-relaxed font-medium">
+            Pada bagian ini kamu akan mengerjakan soal <span class="font-black">pilihan ganda</span> untuk menguji pemahaman kamu.
         </p>
+
+        <div class="mb-10">
+            <p class="text-gray-800 text-base md:text-lg font-medium mb-3">Ketentuan:</p>
+            <ul class="list-disc pl-6 space-y-2 text-gray-800 font-medium text-base md:text-lg">
+                <li>Pilih salah satu jawaban dengan benar.</li>
+                <li>Setiap jawaban benar akan menambah skor kamu.</li>
+                <li>Perhatikan waktu pengerjaan yang tersedia.</li>
+                <li>Kerjakan soal secara mandiri dan jujur.</li>
+                <li>Klik tombol <span class="font-black">"Kerjakan"</span> untuk memulai kuis.</li>
+                <li>Jika kamu telah mengerjakan semua klik tombol <span class="font-black">"Kirim"</span></li>
+            </ul>
+        </div>
 
         <div class="flex justify-end">
             @if ($isCompleted)
-                <button disabled
-                    class="bg-gray-400 text-white px-8 py-2.5 rounded-lg font-bold shadow-md opacity-80 cursor-not-allowed">
+                <button wire:click="startQuiz"
+                    class="bg-[#93D333] text-white px-8 py-2.5 rounded-lg font-bold shadow-md transition">
                     Dikerjakan
                 </button>
             @else
                 <button wire:click="startQuiz"
-                    class="bg-[#FF5A5F] text-white px-8 py-2.5 rounded-lg font-bold shadow-md hover:bg-red-500 transition">
+                    class="bg-[#FF5A5F] text-white px-8 py-2.5 rounded-lg font-bold shadow-md transition">
                     Kerjakan
                 </button>
             @endif
@@ -50,7 +58,7 @@
     <!-- Stat Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Waktu Selesai -->
-        <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-100 flex justify-between items-center">
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex justify-between items-center h-28">
             <div>
                 <div class="text-xs font-bold text-black mb-1">Waktu Selesai</div>
                 <div class="text-3xl font-extrabold">{{ $finishedTime }}</div>
@@ -76,13 +84,13 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                     stroke="currentColor" class="w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0z" />
+                        d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                 </svg>
             </div>
         </div>
 
         <!-- Nilai Tertinggi di Kelas -->
-        <div class="bg-white rounded-lg p-5 shadow-sm border border-gray-100 flex justify-between items-center">
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex justify-between items-center h-28">
             <div>
                 <div class="text-xs font-bold text-black mb-1">Nilai Tertinggi di Kelas</div>
                 <div class="text-3xl font-extrabold">{{ $highestScore }}</div>

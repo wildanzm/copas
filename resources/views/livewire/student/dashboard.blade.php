@@ -42,7 +42,7 @@
     <!-- Path Map (Simplified Design) -->
     <div class="order-4 lg:col-span-8 relative flex flex-col items-center flex-1 pb-20 w-full mt-2">
         <!-- Nodes -->
-        <div class="relative z-10 w-full max-w-sm sm:max-w-md h-[550px] sm:h-[650px]">
+        <div class="relative z-10 w-full max-w-sm sm:max-w-md h-[650px] sm:h-[750px]">
 
             <!-- Node 1 (Top rightish) -->
             <a href="{{ route('student.play-room', ['nodeId' => 1]) }}" wire:navigate
@@ -55,13 +55,13 @@
             <!-- Node 2 (Middle Leftish) -->
             @if ($this->unlockedNode >= 2)
                 <a href="{{ route('student.play-room', ['nodeId' => 2]) }}" wire:navigate
-                    class="absolute top-[22%] left-[35%] sm:left-[45%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
+                    class="absolute top-[20%] left-[35%] sm:left-[45%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
                     <img src="{{ asset('assets/icons/learning/node-2-4.png') }}"
                         class="w-8 h-8 sm:w-10 sm:h-10 object-contain" alt="Node 2">
                 </a>
             @else
                 <div
-                    class="absolute top-[22%] left-[35%] sm:left-[45%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
+                    class="absolute top-[20%] left-[35%] sm:left-[45%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
                     <img src="{{ asset('assets/icons/learning/node-2-4.png') }}"
                         class="w-8 h-8 sm:w-10 sm:h-10 object-contain" alt="Node 2">
                 </div>
@@ -70,13 +70,13 @@
             <!-- Node 3 (Middle Rightish) -->
             @if ($this->unlockedNode >= 3)
                 <a href="{{ route('student.play-room', ['nodeId' => 3]) }}" wire:navigate
-                    class="absolute top-[44%] left-[20%] sm:left-[30%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
+                    class="absolute top-[40%] left-[20%] sm:left-[30%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
                     <img src="{{ asset('assets/icons/learning/node-3.png') }}"
                         class="w-8 h-8 sm:w-10 sm:h-10 object-contain" alt="Node 3">
                 </a>
             @else
                 <div
-                    class="absolute top-[44%] left-[20%] sm:left-[30%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
+                    class="absolute top-[40%] left-[20%] sm:left-[30%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
                     <img src="{{ asset('assets/icons/learning/node-3.png') }}"
                         class="w-8 h-8 sm:w-10 sm:h-10 object-contain" alt="Node 3">
                 </div>
@@ -85,30 +85,45 @@
             <!-- Node 4 (Bottom Leftish) -->
             @if ($this->unlockedNode >= 4)
                 <a href="{{ route('student.play-room', ['nodeId' => 4]) }}" wire:navigate
-                    class="absolute top-[66%] left-[35%] sm:left-[45%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
+                    class="absolute top-[60%] left-[35%] sm:left-[45%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
                     <img src="{{ asset('assets/icons/learning/node-2-4.png') }}"
                         class="w-8 h-8 sm:w-10 sm:h-10 object-contain" alt="Node 4">
                 </a>
             @else
                 <div
-                    class="absolute top-[66%] left-[35%] sm:left-[45%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
+                    class="absolute top-[60%] left-[35%] sm:left-[45%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
                     <img src="{{ asset('assets/icons/learning/node-2-4.png') }}"
                         class="w-8 h-8 sm:w-10 sm:h-10 object-contain" alt="Node 4">
                 </div>
             @endif
 
-            <!-- Node 5 (Bottom center/rightish) -->
+            <!-- Node 5 -->
             @if ($this->unlockedNode >= 5)
                 <a href="{{ route('student.play-room', ['nodeId' => 5]) }}" wire:navigate
-                    class="absolute top-[88%] left-[65%] sm:left-[60%] -translate-x-1/2 w-[5rem] h-[5rem] sm:w-[6rem] sm:h-[6rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
+                    class="absolute top-[80%] left-[65%] sm:left-[60%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
                     <img src="{{ asset('assets/icons/learning/node-5.png') }}"
-                        class="w-10 h-10 sm:w-12 sm:h-12 object-contain" alt="Node 5">
+                        class="w-8 h-8 sm:w-10 sm:h-10 object-contain" alt="Node 5">
                 </a>
             @else
                 <div
-                    class="absolute top-[88%] left-[65%] sm:left-[60%] -translate-x-1/2 w-[5rem] h-[5rem] sm:w-[6rem] sm:h-[6rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
+                    class="absolute top-[80%] left-[65%] sm:left-[60%] -translate-x-1/2 w-[4.5rem] h-[4.5rem] sm:w-[5.5rem] sm:h-[5.5rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
                     <img src="{{ asset('assets/icons/learning/node-5.png') }}"
-                        class="w-10 h-10 sm:w-12 sm:h-12 object-contain" alt="Node 5">
+                        class="w-8 h-8 sm:w-10 sm:h-10 object-contain" alt="Node 5">
+                </div>
+            @endif
+
+            <!-- Node 6 -->
+            @if ($this->unlockedNode >= 6)
+                <a href="{{ route('student.play-room', ['nodeId' => 6]) }}" wire:navigate
+                    class="absolute top-[100%] left-[85%] sm:left-[80%] -translate-x-1/2 w-[5rem] h-[5rem] sm:w-[6rem] sm:h-[6rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-[#1056A4] border-[#073666] hover:scale-110">
+                    <img src="{{ asset('assets/icons/learning/node-6.png') }}"
+                        class="w-10 h-10 sm:w-12 sm:h-12 object-contain" alt="Node 6">
+                </a>
+            @else
+                <div
+                    class="absolute top-[100%] left-[85%] sm:left-[80%] -translate-x-1/2 w-[5rem] h-[5rem] sm:w-[6rem] sm:h-[6rem] rounded-full shadow-lg flex items-center justify-center border-4 transition-transform bg-gray-400 border-gray-500 cursor-not-allowed opacity-80 mix-blend-luminosity">
+                    <img src="{{ asset('assets/icons/learning/node-6.png') }}"
+                        class="w-10 h-10 sm:w-12 sm:h-12 object-contain" alt="Node 6">
                 </div>
             @endif
         </div>
@@ -168,7 +183,8 @@
                             class="w-6 h-6 rounded-full {{ $rankClass }} flex items-center justify-center text-xs font-bold">
                             {{ $index + 1 }}
                         </div>
-                        <div class="w-10 h-10 rounded-full bg-blue-300 overflow-hidden shrink-0 border border-blue-200">
+                        <div
+                            class="w-10 h-10 rounded-full bg-blue-300 overflow-hidden shrink-0 border border-blue-200">
                             @if ($student->avatar)
                                 <img src="{{ asset('storage/' . $student->avatar) }}"
                                     class="w-full h-full object-cover" alt="{{ $student->name }}">

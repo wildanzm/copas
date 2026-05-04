@@ -25,9 +25,10 @@ Setiap node memberikan XP tertentu:
 | --------- | ---------- |
 | 1         | 150        |
 | 2         | 100        |
-| 3         | 200        |
-| 4         | 200        |
-| 5         | 150        |
+| 3         | 150        |
+| 4         | 150        |
+| 5         | 100        |
+| 6         | 150        |
 | **Total** | **800 XP** |
 
 ---
@@ -47,8 +48,8 @@ XP didapat dari hasil kuis:
 
 ## 🔥 Summary
 
-* Total XP dari Node: **800 XP**
-* Total XP dari Quiz: **200 XP**
-* **Total Maksimal XP: 1000 XP (Level 10)**
+- Total XP dari Node: **800 XP**
+- Total XP dari Quiz: **200 XP**
+- **Total Maksimal XP: 1000 XP (Level 10)**
 
 ---

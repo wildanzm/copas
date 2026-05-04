@@ -11,7 +11,11 @@ class Question extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['node_id', 'type', 'content'];
+    protected $fillable = ['node_id', 'type', 'content', 'image_path', 'image_settings'];
+
+    protected $casts = [
+        'image_settings' => 'array',
+    ];
 
     public function node(): BelongsTo
     {

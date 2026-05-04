@@ -3,7 +3,8 @@
 
     <!-- Game-like Level Up / XP Modal -->
     @if ($showModal)
-        <div class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto"
+        <div x-show="show" x-transition.opacity.duration.500ms
+            class="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto"
             x-data="{
                 show: false,
                 currentXp: {{ $oldXp }},
@@ -14,7 +15,7 @@
                 earnedXpAnimated: 0,
                 animateXP() {
                     let start = null;
-                    let duration = 2000;
+                    let duration = 1000;
                     let oldXp = this.currentXp;
                     let diff = this.targetXp - oldXp;
             
@@ -48,6 +49,10 @@
             }" x-init="setTimeout(() => {
                 show = true;
                 animateXP();
+            
+                setTimeout(() => {
+                    show = false;
+                }, 2000);
             }, 100);
             let audio = new Audio('{{ asset('assets/sound/winners.mp3') }}');
             audio.play().catch(e => console.log('Audio play prevented:', e));">
@@ -61,7 +66,7 @@
                 class="bg-white rounded-3xl w-full max-w-sm flex flex-col items-center justify-center p-8 shadow-2xl relative border-4 border-[#99CB3A] text-center my-auto">
 
                 <!-- Close Button -->
-                <button wire:click="$set('showModal', false)"
+                <button @click="show = false"
                     class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-full p-1.5 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2.5">
@@ -163,18 +168,6 @@
                                 x-text="currentLevel"></span></p>
                     </div>
                 </template>
-
-                @if ($node->order_index < 5)
-                    <a href="{{ route('student.play-room', ['nodeId' => $node->order_index + 1]) }}" wire:navigate
-                        class="w-full bg-[#1056A4] hover:bg-[#0c4485] text-white font-black py-4 rounded-xl shadow-lg transition-transform hover:scale-[1.02] tracking-widest text-sm uppercase">
-                        SELANJUTNYA
-                    </a>
-                @else
-                    <a href="{{ route('student.dashboard') }}" wire:navigate
-                        class="w-full bg-[#1056A4] hover:bg-[#0c4485] text-white font-black py-4 rounded-xl shadow-lg transition-transform hover:scale-[1.02] tracking-widest text-sm uppercase">
-                        KEMBALI KE DASHBOARD
-                    </a>
-                @endif
             </div>
         </div>
     @endif

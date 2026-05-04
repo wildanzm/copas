@@ -234,12 +234,12 @@
                         <div class="w-5 h-5 rounded-full border-2 border-gray-400 flex items-center justify-center text-gray-500 group-hover:border-gray-800 group-hover:text-gray-800 transition-colors pt-0.5">
                             <span class="text-lg leading-none font-medium mb-1">+</span>
                         </div>
-                        Add another
+                        Tambah Lainnya
                     </button>
                     @endif
                     
                     <button type="submit" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-2.5 px-6 rounded text-sm transition-colors">
-                        {{ $editingId ? 'Simpan Perubahan' : 'Add student' }}
+                        {{ $editingId ? 'Simpan Perubahan' : 'Tambah Murid' }}
                     </button>
                 </div>
             </form>

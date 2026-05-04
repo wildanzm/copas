@@ -46,12 +46,12 @@ class PlayRoom extends Component
 
     public function mount(int $nodeId): void
     {
-        $completedNodes = \App\Models\StudentProgress::query()
+        $completedNodes = StudentProgress::query()
             ->where('user_id', Auth::id())
             ->where('status', 'completed')
             ->count();
         $unlockedNode = $completedNodes + 1;
-        
+
         abort_unless($nodeId <= $unlockedNode, 403, 'Anda belum membuka misi ini.');
 
         $this->node = Node::with('questions.options')->where('order_index', $nodeId)->firstOrFail();
@@ -205,7 +205,7 @@ class PlayRoom extends Component
         ]);
 
         $photoPath = $this->photo->store('observasi', 'public');
-        $this->concludeNode([200], 'Luar Biasa! Hasil observasimu berhasil dikirim.', $photoPath);
+        $this->concludeNode([150], 'Luar Biasa! Hasil observasimu berhasil dikirim.', $photoPath);
     }
 
     public function submitNode4(): void
@@ -217,10 +217,21 @@ class PlayRoom extends Component
             'answers.*.required' => 'Jawaban ini wajib diisi.',
         ]);
 
-        $this->concludeNode([100, 100], 'Analisis yang Hebat! Jawabanmu tersimpan.');
+        $this->concludeNode([75, 75], 'Analisis yang Hebat! Jawabanmu tersimpan.');
     }
 
     public function submitNode5(): void
+    {
+        $this->validate([
+            'answers.q1' => 'required|string',
+        ], [
+            'answers.*.required' => 'Jawaban ini wajib diisi.',
+        ]);
+
+        $this->concludeNode([100], 'Kerja Bagus! Tantangan selesai.');
+    }
+
+    public function submitNode6(): void
     {
         $this->validate([
             'answers.q1' => 'required|string',
