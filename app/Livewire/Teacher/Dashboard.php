@@ -4,6 +4,7 @@ namespace App\Livewire\Teacher;
 
 use App\Models\ClassRoom;
 use App\Models\Node;
+use App\Models\Question;
 use App\Models\StudentAnswer;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -48,12 +49,26 @@ class Dashboard extends Component
 
     public function getQuizStatsProperty()
     {
-        $studentIds = $this->studentIds;
-        $totalQuestions = \App\Models\Question::where('type', 'final_quiz')->count() ?: 1;
+        $school = Auth::user()->school;
+        $allStudentIdsInSchool = User::where('school', $school)->role('student')->pluck('id');
+        $studentIdsInClasses = $this->studentIds;
+
+        $totalQuestions = Question::where('type', 'final_quiz')->count() ?: 1;
         $maxPossibleXp = $totalQuestions * 10;
 
-        // Get total xp per user for final quiz questions
-        $userScores = StudentAnswer::whereIn('user_id', $studentIds)
+        // School-wide average time
+        $avgTimeSeconds = StudentAnswer::whereIn('user_id', $allStudentIdsInSchool)
+            ->whereHas('question', function ($q) {
+                $q->where('type', 'final_quiz');
+            })
+            ->avg('time_spent') ?: 0;
+
+        $minutes = floor($avgTimeSeconds / 60);
+        $seconds = round($avgTimeSeconds % 60);
+        $formattedAvgTime = sprintf('%02d:%02d', $minutes, $seconds);
+
+        // Score stats for teacher's classes
+        $userScores = StudentAnswer::whereIn('user_id', $studentIdsInClasses)
             ->whereHas('question', function ($q) {
                 $q->where('type', 'final_quiz');
             })
@@ -63,20 +78,19 @@ class Dashboard extends Component
 
         if ($userScores->isEmpty()) {
             return [
-                'avg_time' => '00:00',
+                'avg_time' => $formattedAvgTime,
                 'avg_score' => 0,
                 'min_score' => 0,
                 'max_score' => 0,
             ];
         }
-        
-        // Convert total_xp to percentage: score = (total_xp / (totalQuestions * 10)) * 100
+
         $percentages = $userScores->map(function ($score) use ($maxPossibleXp) {
             return round(($score->total_xp / $maxPossibleXp) * 100);
         });
 
         return [
-            'avg_time' => '12:45', // static for now as no duration field exists
+            'avg_time' => $formattedAvgTime,
             'avg_score' => round($percentages->avg(), 1),
             'min_score' => round($percentages->min(), 1),
             'max_score' => round($percentages->max(), 1),

@@ -1,4 +1,5 @@
 <div class="min-h-screen flex flex-col font-sans" x-data="{
+    answers: @entangle('answers'),
     playSuccessEffects() {
         let audio = new Audio('{{ asset('assets/sound/winners.mp3') }}');
         audio.play().catch(e => console.log('Audio play prevented:', e));
@@ -12,26 +13,23 @@
                 zIndex: 99999
             });
         }
+    },
+    init() {
+        if ({{ session()->has('message') ? 'true' : 'false' }}) {
+            localStorage.removeItem('node_answers_{{ $node->id }}');
+        } else {
+            const saved = localStorage.getItem('node_answers_{{ $node->id }}');
+            if (saved) {
+                this.answers = JSON.parse(saved);
+            }
+        }
+
+        this.$watch('answers', value => {
+            localStorage.setItem('node_answers_{{ $node->id }}', JSON.stringify(value));
+        });
     }
 }">
-    <!-- Header / Top Bar -->
-    <div class="flex items-center py-6 w-full max-w-3xl mx-auto px-4 md:px-0 mb-6">
-        <a href="{{ route('student.dashboard') }}"
-            class="text-black font-bold hover:opacity-70 transition cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="black"
-                class="w-8 h-8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </a>
-        <div class="flex-1 flex justify-center px-4">
-            <div
-                class="w-full max-w-2xl h-4 border border-gray-400 rounded-full bg-white relative overflow-hidden shadow-inner">
-                <!-- Progress Bar: Node 6 -->
-                <div class="h-full bg-[#99CB3A] w-[100%] transition-all duration-500 rounded-full"></div>
-            </div>
-        </div>
-        <div class="w-8"></div>
-    </div>
+    <x-student.node-header :progress="$progressPercentage" />
 
     <!-- Content Area -->
     <div
@@ -51,8 +49,7 @@
                         yang baik!</p>
                     <div class="w-28 h-36 shrink-0">
                         <img src="{{ asset('assets/illustrations/character-4.png') }}"
-                            onerror="this.src='{{ asset('assets/illustrations/character-3.png') }}'"
-                            alt="Student Avatar" class="w-full h-full object-contain drop-shadow-sm">
+                            alt="Student Avatar" class="w-full h-full object-contain drop-shadow-sm" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -108,8 +105,8 @@
                 <!-- Character -->
                 <div class="w-32 h-40 md:w-44 md:h-56 shrink-0 md:-mt-6">
                     <img src="{{ asset('assets/illustrations/character-3.png') }}"
-                        onerror="this.src='{{ asset('assets/illustrations/character-3.png') }}'" alt="Student Avatar"
-                        class="w-full h-full object-contain">
+                        alt="Student Avatar"
+                        class="w-full h-full object-contain" loading="lazy">
                 </div>
             </div>
         @endif
@@ -134,6 +131,6 @@
         </div>
     </div>
 
-    <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 </div>
+

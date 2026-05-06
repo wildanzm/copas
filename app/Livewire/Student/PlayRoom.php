@@ -44,6 +44,8 @@ class PlayRoom extends Component
 
     public int $newXp = 0;
 
+    public float $progressPercentage = 0;
+
     public function mount(int $nodeId): void
     {
         $completedNodes = StudentProgress::query()
@@ -55,6 +57,9 @@ class PlayRoom extends Component
         abort_unless($nodeId <= $unlockedNode, 403, 'Anda belum membuka misi ini.');
 
         $this->node = Node::with('questions.options')->where('order_index', $nodeId)->firstOrFail();
+
+        $totalNodes = Node::count();
+        $this->progressPercentage = ($nodeId / $totalNodes) * 100;
     }
 
     public function getEmbedVideoUrl(): ?string
@@ -122,18 +127,19 @@ class PlayRoom extends Component
 
     private function concludeNode(array $xpPerQuestion, string $flashMessage, ?string $photoPath = null): void
     {
-        $user = Auth::user()->fresh();
-        $this->oldLevel = $user->level;
+        $user = Auth::user();
+
+        // Fetch total XP once
         $this->oldXp = (int) $user->studentAnswers()->sum('xp_earned');
+        $this->oldLevel = User::calculateLevel($this->oldXp);
 
         $this->saveStudentAnswers($photoPath, $xpPerQuestion);
         $this->markNodeAsCompleted();
 
-        $user = $user->fresh();
-        $this->newLevel = $user->level;
-        $this->newXp = (int) $user->studentAnswers()->sum('xp_earned');
-
         $this->earnedXp = array_sum($xpPerQuestion);
+        $this->newXp = $this->oldXp + $this->earnedXp;
+        $this->newLevel = User::calculateLevel($this->newXp);
+
         $this->isLevelUp = $this->newLevel > $this->oldLevel;
         $this->showModal = true;
 

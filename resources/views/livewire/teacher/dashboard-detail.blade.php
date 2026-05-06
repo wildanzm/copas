@@ -19,10 +19,12 @@
             <div x-show="activeAccordion === 1" x-collapse x-cloak>
                 <div class="px-5 md:px-13 pb-6 pt-1 text-sm md:text-base">
                     <ol class="list-decimal pl-5 space-y-2 text-gray-800">
-                        <li>Menjelaskan permasalahan lingkungan yang ada dengan baik dan benar.</li>
-                        <li>Menjelaskan penyebab terjadinya permasalahan lingkungan.</li>
-                        <li>Menjelaskan dampak permasalahan lingkungan terhadap kehidupan manusia.</li>
-                        <li>Memberikan solusi untuk mengatasi permasalahan lingkungan yang ada.</li>
+                        <li>Menganalisis penyebab dan dampak permasalahan lingkungan berdasarkan hasil pengamatan atau
+                            informasi yang diperoleh, serta mengaitkannya dengan fenomena yang terjadi di lingkungan
+                            sekitar.</li>
+                        <li>Menentukan solusi yang logis dan realistis untuk mengatasi permasalahan lingkungan
+                            berdasarkan
+                            hasil analisis yang telah dilakukan.</li>
                     </ol>
                 </div>
             </div>
@@ -74,15 +76,12 @@
                                     <p>Ayo tonton video berikut dengan saksama!<br>Perhatikan kondisi lingkungan,
                                         kejadian
                                         yang terjadi, dan dampaknya bagi masyarakat.</p>
-                                    <div class="relative w-full max-w-lg aspect-video mx-auto rounded overflow-hidden shadow-sm my-4 group bg-black">
-                                        <img src="https://img.youtube.com/vi/h8jOOd6le30/hqdefault.jpg" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
-                                        <a href="https://youtu.be/h8jOOd6le30" target="_blank" class="absolute inset-0 flex items-center justify-center z-10">
-                                            <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-8 h-8 ml-1">
-                                                    <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
-                                                </svg>
-                                            </div>
-                                        </a>
+                                    <div class="relative w-full max-w-lg aspect-video mx-auto rounded overflow-hidden shadow-sm my-4">
+                                        <iframe class="absolute inset-0 w-full h-full"
+                                            src="https://www.youtube.com/embed/h8jOOd6le30" title="YouTube video player"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen></iframe>
                                     </div>
                                     <div>
                                         <h4 class="font-bold mb-2">Instruksi</h4>
@@ -225,15 +224,12 @@
                                     <div>
                                         <p class="mb-2 mt-4">Perhatikan video berikut untuk melihat penjelasan tentang
                                             penyebab dan solusi permasalahan lingkungan.</p>
-                                        <div class="relative w-full max-w-lg aspect-video mx-auto rounded overflow-hidden shadow-sm my-4 group bg-black">
-                                            <img src="https://img.youtube.com/vi/tVbu49X0aus/hqdefault.jpg" alt="Video Thumbnail" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">
-                                            <a href="https://youtu.be/tVbu49X0aus" target="_blank" class="absolute inset-0 flex items-center justify-center z-10">
-                                                <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-8 h-8 ml-1">
-                                                        <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                            </a>
+                                        <div class="relative w-full max-w-lg aspect-video mx-auto rounded overflow-hidden shadow-sm my-4">
+                                            <iframe class="absolute inset-0 w-full h-full"
+                                                src="https://www.youtube.com/embed/tVbu49X0aus"
+                                                title="YouTube video player" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                allowfullscreen></iframe>
                                         </div>
                                     </div>
                                     <div>
@@ -252,7 +248,7 @@
                         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
                             <button @click="activeSub = activeSub === 5 ? null : 5"
                                 class="w-full flex items-center justify-between p-4 font-bold text-base text-left hover:bg-gray-50 transition-colors">
-                                <span>KEGIATAN 5 : Ayo Lakukan Refleksi</span>
+                                <span>KEGIATAN 5 : ALAM BERUBAH, KITA WASPADA!</span>
                                 <svg x-show="activeSub !== 5" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                     class="w-4 h-4 text-gray-400 shrink-0">
@@ -267,6 +263,52 @@
                                 </svg>
                             </button>
                             <div x-show="activeSub === 5" x-collapse x-cloak>
+                                <div class="px-4 pb-5 text-sm md:text-base space-y-4">
+                                    <p>Pernahkah kamu berpikir, mengapa udara sekarang terasa lebih panas? Atau mengapa
+                                        gunung yang penuh pohon tiba-tiba bisa longsor? Apakah itu semua karena ulah
+                                        alam sendiri, atau ada campur tangan manusia di dalamnya?</p>
+                                    <p>Ayo tonton video animasi berikut untuk memahami bagaimana lingkungan kita berubah
+                                        dan apa dampaknya bagi kita!</p>
+
+                                    <div class="relative w-full max-w-lg aspect-video mx-auto rounded overflow-hidden shadow-sm my-4">
+                                        <iframe class="absolute inset-0 w-full h-full"
+                                            src="https://www.youtube.com/embed/iETBlRpbwEE" title="YouTube video player"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            allowfullscreen></iframe>
+                                    </div>
+
+                                    <div>
+                                        <h4 class="font-bold mb-2">Instruksi</h4>
+                                        <ol class="list-decimal pl-5 space-y-1">
+                                            <li>Tuliskan satu kegiatan yang bisa kamu lakukan di sekolah untuk membantu
+                                                mengurangi pencemaran lingkungan atau mungkin mencegah bencana lainnya!
+                                            </li>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sub-accordion 6 -->
+                        <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
+                            <button @click="activeSub = activeSub === 6 ? null : 6"
+                                class="w-full flex items-center justify-between p-4 font-bold text-base text-left hover:bg-gray-50 transition-colors">
+                                <span>KEGIATAN 6 : Ayo Lakukan Refleksi</span>
+                                <svg x-show="activeSub !== 6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    class="w-4 h-4 text-gray-400 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                </svg>
+                                <svg x-show="activeSub === 6" style="display:none" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                    class="w-4 h-4 text-gray-400 shrink-0">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                                </svg>
+                            </button>
+                            <div x-show="activeSub === 6" x-collapse x-cloak>
                                 <div class="px-4 pb-5 text-sm md:text-base space-y-4">
                                     <div>
                                         <h4 class="font-bold mb-2">Instruksi</h4>

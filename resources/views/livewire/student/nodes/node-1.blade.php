@@ -1,4 +1,5 @@
 <div class="min-h-screen flex flex-col font-sans" x-data="{
+    answers: @entangle('answers'),
     playSuccessEffects() {
         let audio = new Audio('{{ asset('assets/sound/winners.mp3') }}');
         audio.play().catch(e => console.log('Audio play prevented:', e));
@@ -12,26 +13,21 @@
                 zIndex: 99999
             });
         }
+    },
+    init() {
+        // Load from local storage
+        const saved = localStorage.getItem('node_answers_{{ $node->id }}');
+        if (saved) {
+            this.answers = JSON.parse(saved);
+        }
+
+        // Save to local storage on change
+        this.$watch('answers', value => {
+            localStorage.setItem('node_answers_{{ $node->id }}', JSON.stringify(value));
+        });
     }
 }">
-    <!-- Header / Top Bar -->
-    <div class="flex items-center py-6 w-full max-w-3xl mx-auto px-4 md:px-0 mb-6">
-        <a href="{{ route('student.dashboard') }}"
-            class="text-black font-bold hover:opacity-70 transition cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="black"
-                class="w-8 h-8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </a>
-        <div class="flex-1 flex justify-center px-4">
-            <div
-                class="w-full max-w-2xl h-4 border border-gray-400 rounded-full bg-white relative overflow-hidden shadow-inner">
-                <!-- Progress Bar -->
-                <div class="h-full bg-[#99CB3A] w-[20%] transition-all duration-500 rounded-full"></div>
-            </div>
-        </div>
-        <div class="w-8"></div> <!-- spacer to balance the X button -->
-    </div>
+    <x-student.node-header :progress="$progressPercentage" />
 
     <!-- Content Area -->
     <div class="max-w-3xl mx-auto w-full px-4 sm:px-6 pb-12 flex-1">
@@ -49,35 +45,20 @@
             <div
                 class="w-32 h-40 md:w-36 md:h-48 shrink-0 relative mt-[-20px] md:-mt-16 ml-auto mr-4 md:mr-0 md:ml-0 self-end md:self-auto">
                 <img src="{{ asset('assets/illustrations/character-1.png') }}" alt="Student Avatar"
-                    class="w-full h-full object-contain">
+                    class="w-full h-full object-contain" loading="lazy">
             </div>
         </div>
 
-        <!-- Video Section (White Card) -->
-        <div
-            class="bg-white rounded-xl p-6 md:p-8 shadow-sm mb-12 w-full border border-gray-200 relative z-10 -mt-16 md:-mt-12">
+        <!-- Video Section -->
+        <div class="bg-white rounded-xl p-6 md:p-8 shadow-sm mb-12 w-full border border-gray-200 relative z-10 -mt-16 md:-mt-12">
             <p class="text-gray-900 font-medium mb-6 text-sm md:text-base pr-0 md:pr-4">Ayo tonton video berikut dengan
                 saksama!<br>Perhatikan kondisi lingkungan, kejadian yang terjadi, dan dampaknya bagi masyarakat.</p>
-            <div class="aspect-video w-full overflow-hidden bg-black flex items-center justify-center relative group rounded-xl shadow-sm border border-gray-200">
-                @if ($node->video_url)
-                    @php
-                        preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $node->video_url, $match);
-                        $videoId = $match[1] ?? '';
-                    @endphp
-                    @if($videoId)
-                        <img src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" alt="Video Thumbnail">
-                    @endif
-                    <a href="{{ $node->video_url }}" target="_blank" class="absolute inset-0 flex items-center justify-center z-10">
-                        <div class="w-16 h-16 md:w-20 md:h-20 bg-red-600 rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" class="w-8 h-8 md:w-10 md:h-10 ml-1">
-                                <path fill-rule="evenodd" d="M4.5 5.653c0-1.426 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                    </a>
-                @else
-                    <span class="text-white font-medium">Video Tidak Tersedia</span>
-                @endif
-            </div>
+            
+            @php
+                preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i', $node->video_url, $match);
+                $videoId = $match[1] ?? '';
+            @endphp
+            <x-student.video-player :videoId="$videoId" />
         </div>
 
         <!-- Analisis Section -->
@@ -123,35 +104,12 @@
         </div>
     </div>
 
-    <!-- Bottom Bar (Border + Button) -->
-    @if (session()->has('message'))
-        <div class="w-full bg-[#96C7F7] py-6 sm:py-8 mt-6" x-init="playSuccessEffects()">
-            <div
-                class="max-w-3xl mx-auto px-6 w-full flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-0">
-                <div class="flex items-center gap-4 md:gap-5">
-                    <div
-                        class="w-14 h-14 md:w-16 md:h-16 bg-[#E8F2FC] rounded-full flex items-center justify-center shrink-0">
-                        <img src="{{ asset('assets/icons/etc/nice-job.png') }}" alt="Nice Job"
-                            class="w-8 h-8 md:w-10 md:h-10 object-contain">
-                    </div>
-                    <span class="font-black text-xl md:text-2xl text-black tracking-wide">Kerja Bagus!</span>
-                </div>
-                <a href="{{ route('student.play-room', ['nodeId' => 2]) }}" wire:navigate
-                    class="px-8 py-3 bg-[#99CB3A] hover:bg-[#8ab830] transition text-black font-black rounded shadow tracking-widest text-sm md:text-base cursor-pointer text-center w-full sm:w-auto">
-                    SELANJUTNYA
-                </a>
-            </div>
-        </div>
-    @else
-        <div class="w-full border-t border-gray-400/50 bg-transparent py-6 md:py-8 mt-6">
-            <div class="max-w-3xl mx-auto px-6 w-full flex justify-end">
-                <button wire:click="submitNode1"
-                    class="px-10 py-3 bg-[#99CB3A] hover:bg-[#8ab830] transition text-black font-black rounded shadow tracking-widest text-sm md:text-base w-full md:w-auto">
-                    KIRIM
-                </button>
-            </div>
-        </div>
-    @endif
+    <x-student.node-bottom-bar submitAction="submitNode1" :nextRoute="route('student.play-room', ['nodeId' => 2])" />
+
+    <!-- Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+</div>
+
 
     <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>

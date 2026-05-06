@@ -1,4 +1,6 @@
 <div class="min-h-screen flex flex-col font-sans" x-data="{
+    isCompressing: false,
+    answers: @entangle('answers'),
     playSuccessEffects() {
         let audio = new Audio('{{ asset('assets/sound/winners.mp3') }}');
         audio.play().catch(e => console.log('Audio play prevented:', e));
@@ -12,26 +14,82 @@
                 zIndex: 99999
             });
         }
+    },
+    init() {
+        if ({{ session()->has('message') ? 'true' : 'false' }}) {
+            localStorage.removeItem('node_answers_{{ $node->id }}');
+        } else {
+            const saved = localStorage.getItem('node_answers_{{ $node->id }}');
+            if (saved) {
+                this.answers = JSON.parse(saved);
+            }
+        }
+
+        this.$watch('answers', value => {
+            localStorage.setItem('node_answers_{{ $node->id }}', JSON.stringify(value));
+        });
+    },
+    async handleFileSelect(event) {
+        const files = event.target.files || event.dataTransfer.files;
+        if (!files.length) return;
+        
+        let file = files[0];
+        
+        if (file.size > 2 * 1024 * 1024) {
+            this.isCompressing = true;
+            try {
+                file = await this.compressImage(file);
+            } catch (err) {
+                console.error('Compression error:', err);
+            } finally {
+                this.isCompressing = false;
+            }
+        }
+        
+        @this.upload('photo', file);
+    },
+    compressImage(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (e) => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    
+                    const maxDim = 1600;
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height *= maxDim / width;
+                            width = maxDim;
+                        } else {
+                            width *= maxDim / height;
+                            height = maxDim;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    canvas.toBlob((blob) => {
+                        if (!blob) {
+                            reject(new Error('Canvas to Blob failed'));
+                            return;
+                        }
+                        resolve(new File([blob], file.name, { type: 'image/jpeg' }));
+                    }, 'image/jpeg', 0.7);
+                };
+            };
+            reader.onerror = reject;
+        });
     }
 }">
-    <!-- Header / Top Bar -->
-    <div class="flex items-center py-6 w-full max-w-3xl mx-auto px-4 md:px-0 mb-6">
-        <a href="{{ route('student.dashboard') }}"
-            class="text-black font-bold hover:opacity-70 transition cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="4" stroke="black"
-                class="w-8 h-8">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </a>
-        <div class="flex-1 flex justify-center px-4">
-            <div
-                class="w-full max-w-2xl h-4 border border-gray-400 rounded-full bg-white relative overflow-hidden shadow-inner">
-                <!-- Progress Bar: Node 3 -->
-                <div class="h-full bg-[#99CB3A] w-[60%] transition-all duration-500 rounded-full"></div>
-            </div>
-        </div>
-        <div class="w-8"></div>
-    </div>
+    <x-student.node-header :progress="$progressPercentage" />
 
     <!-- Content Area -->
     <div class="max-w-3xl mx-auto w-full px-4 sm:px-6 pb-12 flex-1">
@@ -50,7 +108,7 @@
             <!-- Character -->
             <div class="w-28 h-36 md:w-40 md:h-52 shrink-0 hidden md:block md:-mt-8">
                 <img src="{{ asset('assets/illustrations/character-2.png') }}" alt="Student Avatar"
-                    class="w-full h-full object-contain">
+                    class="w-full h-full object-contain" loading="lazy">
             </div>
         </div>
 
@@ -69,19 +127,19 @@
             </ul>
         </div>
 
-        <!-- Mobile Character (since hidden above) -->
+        <!-- Mobile Character -->
         <div class="w-28 h-36 md:hidden relative mr-4 shrink-0 mx-auto -mt-6 mb-4 z-20">
-            <img src="{{ asset('assets/illustrations/character-2.png') }}" class="w-full h-full object-contain">
+            <img src="{{ asset('assets/illustrations/character-2.png') }}" class="w-full h-full object-contain" loading="lazy">
         </div>
 
         <div class="w-full space-y-8">
             <!-- Upload Box -->
             <div class="flex flex-col items-center justify-center w-full min-h-[250px] border-2 border-transparent bg-white shadow-sm rounded-2xl cursor-pointer hover:bg-gray-50 transition-colors relative overflow-hidden"
                 x-data="{ isDragging: false }" @dragover.prevent="isDragging = true" @dragleave.prevent="isDragging = false"
-                @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; $refs.fileInput.dispatchEvent(new Event('change', { bubbles: true }))"
+                @drop.prevent="isDragging = false; handleFileSelect($event)"
                 :class="{ 'ring-4 ring-[#99CB3A]/50 bg-gray-50': isDragging }">
 
-                <input type="file" wire:model="photo" accept="image/*"
+                <input type="file" @change="handleFileSelect" accept="image/*"
                     class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-20" x-ref="fileInput">
 
                 @if ($photo)
@@ -101,6 +159,9 @@
 
                         <div wire:loading wire:target="photo" class="mt-4 text-[#99CB3A] font-bold">
                             Mengunggah...
+                        </div>
+                        <div x-show="isCompressing" class="mt-4 text-blue-500 font-bold" x-cloak>
+                            Mengompres Gambar...
                         </div>
                     </div>
                 @endif
@@ -123,38 +184,8 @@
         </div>
     </div>
 
-    <!-- Bottom Bar -->
-    @if (session()->has('message'))
-        <div class="w-full bg-[#96C7F7] py-6 sm:py-8 mt-6" x-init="playSuccessEffects()">
-            <div
-                class="max-w-3xl mx-auto px-6 w-full flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-0">
-                <div class="flex items-center gap-4 md:gap-5">
-                    <div
-                        class="w-14 h-14 md:w-16 md:h-16 bg-[#E8F2FC] rounded-full flex items-center justify-center shrink-0">
-                        <img src="{{ asset('assets/icons/etc/nice-job.png') }}" alt="Nice Job"
-                            class="w-8 h-8 md:w-10 md:h-10 object-contain">
-                    </div>
-                    <span class="font-black text-xl md:text-2xl text-black tracking-wide">Teruskan semangat
-                        belajarmu!</span>
-                </div>
-                <a href="{{ route('student.play-room', ['nodeId' => 4]) }}" wire:navigate
-                    class="px-8 py-3 bg-[#99CB3A] hover:bg-[#8ab830] transition text-black font-black rounded shadow tracking-widest text-sm md:text-base cursor-pointer text-center w-full sm:w-auto">
-                    SELANJUTNYA
-                </a>
-            </div>
-        </div>
-    @else
-        <div class="w-full border-t border-gray-400/50 bg-transparent py-6 md:py-8 mt-6">
-            <div class="max-w-3xl mx-auto px-6 w-full flex justify-end">
-                <button wire:click="submitNode3"
-                    class="px-10 py-3 bg-[#99CB3A] hover:bg-[#8ab830] disabled:opacity-50 transition text-black font-black rounded shadow tracking-widest text-sm md:text-base w-full md:w-auto"
-                    wire:loading.attr="disabled">
-                    KIRIM
-                </button>
-            </div>
-        </div>
-    @endif
+    <x-student.node-bottom-bar submitAction="submitNode3" :nextRoute="route('student.play-room', ['nodeId' => 4])" message="Luar Biasa! Hasil observasimu berhasil dikirim." />
 
-    <!-- Confetti Library -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 </div>
+

@@ -3,6 +3,7 @@
 namespace App\Livewire\Student;
 
 use App\Models\Node;
+use App\Models\Question;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -28,7 +29,14 @@ class Quiz extends Component
             $q->where('type', 'final_quiz');
         })->latest('created_at')->first();
 
-        return $answer ? $answer->created_at->format('H:i') : '00:00';
+        if (! $answer || ! $answer->time_spent) {
+            return '00:00';
+        }
+
+        $minutes = floor($answer->time_spent / 60);
+        $seconds = $answer->time_spent % 60;
+
+        return sprintf('%02d:%02d', $minutes, $seconds);
     }
 
     public function getMyScoreProperty()
@@ -37,7 +45,7 @@ class Quiz extends Component
             $q->where('type', 'final_quiz');
         })->sum('xp_earned');
 
-        $totalQuestions = \App\Models\Question::where('type', 'final_quiz')->count();
+        $totalQuestions = Question::where('type', 'final_quiz')->count();
         $maxPossibleXp = $totalQuestions * 10;
 
         if ($xp > 0 && $maxPossibleXp > 0) {
@@ -61,7 +69,7 @@ class Quiz extends Component
             ->first()
             ->total_final_xp ?? 0;
 
-        $totalQuestions = \App\Models\Question::where('type', 'final_quiz')->count();
+        $totalQuestions = Question::where('type', 'final_quiz')->count();
         $maxPossibleXp = $totalQuestions * 10;
 
         if ($highestXp > 0 && $maxPossibleXp > 0) {

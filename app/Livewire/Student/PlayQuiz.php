@@ -5,6 +5,7 @@ namespace App\Livewire\Student;
 use App\Models\Question;
 use App\Models\StudentAnswer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -39,12 +40,12 @@ class PlayQuiz extends Component
 
     public function submitQuiz($answers, $timeSpent)
     {
-        return \Illuminate\Support\Facades\DB::transaction(function () use ($answers, $timeSpent) {
+        return DB::transaction(function () use ($answers, $timeSpent) {
             $user = Auth::user();
-            
+
             // Get question IDs once to avoid repeated whereHas queries
             $questionIds = collect($this->questions)->pluck('id')->toArray();
-            
+
             // Get current level and best XP in fewer queries
             $oldLevel = $user->level;
             $currentBestXp = (int) $user->studentAnswers()
@@ -85,6 +86,7 @@ class PlayQuiz extends Component
                     'question_id' => $q['id'],
                     'answer_text' => $answerOptionId ? (string) $answerOptionId : null,
                     'xp_earned' => $xp,
+                    'time_spent' => $timeSpent,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

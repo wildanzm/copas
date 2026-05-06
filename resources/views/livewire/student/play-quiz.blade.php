@@ -1,9 +1,9 @@
-<div class="min-h-screen flex flex-col font-sans relative" x-data="quizApp()">
+<div class="min-h-screen flex flex-col font-sans relative bg-[#D9EEF9]" x-data="quizApp()">
 
     <!-- Top Navbar -->
     <div class="w-full flex items-center justify-between px-6 py-4 relative z-10 border-b border-gray-300/50">
         <!-- Back Button -->
-        <a href="{{ route('student.quiz') }}"
+        <a @click.prevent="confirmBack()"
             class="w-10 h-10 border-2 border-black rounded-lg flex items-center justify-center hover:bg-black/5 transition cursor-pointer bg-white">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="black"
                 class="w-5 h-5">
@@ -249,6 +249,25 @@
 
             prev() {
                 if (this.currentIndex > 0) this.currentIndex--;
+            },
+
+            async confirmBack() {
+                const result = await Swal.fire({
+                    title: 'Yakin ingin kembali?',
+                    text: 'Jika Anda kembali sekarang, semua jawaban Anda saat ini akan hilang.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#FF5A5F',
+                    cancelButtonColor: '#2D74DB',
+                    confirmButtonText: 'Ya, Kembali',
+                    cancelButtonText: 'Lanjutkan Kuis'
+                });
+
+                if (result.isConfirmed) {
+                    localStorage.removeItem('quiz_answers');
+                    localStorage.removeItem('quiz_timespent');
+                    window.location.href = "{{ route('student.quiz') }}";
+                }
             },
 
             playSuccessEffects() {

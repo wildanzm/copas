@@ -33,10 +33,15 @@ class Quiz extends Component
             $correctCount = $answers->where('xp_earned', '>', 0)->count();
             $score = $hasAnswers ? ($totalQuestions > 0 ? round(($correctCount / $totalQuestions) * 100) : 0) : '-';
 
-            // Get latest answer as finish time
-            $finishTime = $hasAnswers
-                ? $answers->max('created_at')->format('H:i')
-                : '-';
+            // Get duration from time_spent column
+            $durationSeconds = $hasAnswers ? ($answers->first()->time_spent ?? 0) : 0;
+            $finishTime = '-';
+
+            if ($hasAnswers && $durationSeconds > 0) {
+                $m = floor($durationSeconds / 60);
+                $s = $durationSeconds % 60;
+                $finishTime = sprintf('%02d:%02d', $m, $s);
+            }
 
             return [
                 'id' => $student->id,
@@ -54,34 +59,19 @@ class Quiz extends Component
 
     public function getAverageTimeProperty()
     {
-        // For average time, we could theoretically use the already fetched student answers, 
-        // but since this is an isolated property getter, we'll keep the DB query but make it efficient.
-        $answers = StudentAnswer::whereHas('question', function ($q) {
-            $q->where('type', 'final_quiz');
-        })->get();
+        $school = auth()->user()->school;
+        $studentIds = User::where('school', $school)->role('student')->pluck('id');
 
-        if ($answers->isEmpty()) {
-            return '00:00';
-        }
+        $avgTimeSeconds = StudentAnswer::whereIn('user_id', $studentIds)
+            ->whereHas('question', function ($q) {
+                $q->where('type', 'final_quiz');
+            })
+            ->avg('time_spent') ?: 0;
 
-        $totalSeconds = 0;
-        $userCount = 0;
+        $minutes = floor($avgTimeSeconds / 60);
+        $seconds = round($avgTimeSeconds % 60);
 
-        foreach ($answers->groupBy('user_id') as $userAnswers) {
-            $time = $userAnswers->max('created_at');
-            if ($time) {
-                // Get seconds since midnight
-                $totalSeconds += ($time->hour * 3600) + ($time->minute * 60) + $time->second;
-                $userCount++;
-            }
-        }
-
-        $avgSeconds = $userCount > 0 ? $totalSeconds / $userCount : 0;
-        $minutes = floor($avgSeconds / 60);
-        $hours = floor($minutes / 60);
-        $minutes = $minutes % 60;
-
-        return str_pad($hours, 2, '0', STR_PAD_LEFT).':'.str_pad($minutes, 2, '0', STR_PAD_LEFT);
+        return sprintf('%02d:%02d', $minutes, $seconds);
     }
 
     public function getAverageScoreProperty()

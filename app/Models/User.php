@@ -68,8 +68,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getLevelAttribute(): int
     {
-        $totalXp = $this->studentAnswers()->sum('xp_earned');
+        return self::calculateLevel((int) $this->studentAnswers()->sum('xp_earned'));
+    }
 
+    public static function calculateLevel(int $totalXp): int
+    {
         if ($totalXp <= 100) {
             return 1;
         }

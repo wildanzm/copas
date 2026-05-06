@@ -24,7 +24,7 @@ class Dashboard extends Component
 
     public function getProgressPercentageProperty(): float|int
     {
-        $totalNodes = Node::count() ?: 5;
+        $totalNodes = Node::count() ?: 6;
 
         return ($this->completedNodesCount / $totalNodes) * 100;
     }
@@ -34,14 +34,14 @@ class Dashboard extends Component
         return $this->completedNodesCount + 1;
     }
 
-    public function getStudentLevelProperty(): int
+    public function getStudentStatsProperty(): array
     {
-        return Auth::user()->level;
-    }
+        $xp = (int) Auth::user()->studentAnswers()->sum('xp_earned');
 
-    public function getStudentXpProperty(): int
-    {
-        return Auth::user()->studentAnswers()->sum('xp_earned');
+        return [
+            'xp' => $xp,
+            'level' => User::calculateLevel($xp),
+        ];
     }
 
     public function getLeaderboardProperty()
@@ -59,9 +59,11 @@ class Dashboard extends Component
 
     public function render()
     {
+        $stats = $this->studentStats;
+
         return view('livewire.student.dashboard', [
-            'level' => $this->studentLevel,
-            'xp' => $this->studentXp,
+            'level' => $stats['level'],
+            'xp' => $stats['xp'],
             'leaderboard' => $this->leaderboard,
         ]);
     }

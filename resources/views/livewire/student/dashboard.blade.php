@@ -23,10 +23,11 @@
                 class="absolute top-full mt-2 sm:right-1/2 sm:translate-x-1/2 lg:right-0 lg:translate-x-0 w-[300px] sm:w-[450px] bg-[#FAF9F5] border border-gray-200 rounded-xl shadow-xl p-6 z-[100] text-gray-900">
                 <h4 class="font-black text-sm mb-3 tracking-wide uppercase">Tujuan Pembelajaran</h4>
                 <ol class="list-decimal pl-5 space-y-2 text-sm leading-relaxed font-medium">
-                    <li>Menjelaskan permasalahan lingkungan yang ada dengan baik dan benar.</li>
-                    <li>Menjelaskan penyebab terjadinya permasalahan lingkungan.</li>
-                    <li>Menjelaskan dampak permasalahan lingkungan terhadap kehidupan manusia.</li>
-                    <li>Memberikan solusi untuk mengatasi permasalahan lingkungan yang ada.</li>
+                    <li>Menganalisis penyebab dan dampak permasalahan lingkungan berdasarkan hasil pengamatan atau
+                        informasi yang diperoleh, serta mengaitkannya dengan fenomena yang terjadi di lingkungan
+                        sekitar.</li>
+                    <li>Menentukan solusi yang logis dan realistis untuk mengatasi permasalahan lingkungan berdasarkan
+                        hasil analisis yang telah dilakukan.</li>
                 </ol>
             </div>
         </div>
