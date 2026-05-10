@@ -1,11 +1,11 @@
 <div class="max-w-4xl mx-auto p-4 md:p-8 flex flex-col gap-4">
-    <div x-data="{ activeAccordion: null }" class="flex flex-col gap-4">
+    <div x-data="{ activeAccordion: 1 }" class="flex flex-col gap-4">
 
-        <!-- Accordion 1: Tujuan Pembelajaran -->
+        <!-- Accordion 1: CP & Tujuan Pembelajaran -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden text-gray-900">
             <button @click="activeAccordion = activeAccordion === 1 ? null : 1"
                 class="w-full flex items-center justify-between p-5 md:p-6 font-bold text-lg md:text-xl text-left transition-colors hover:bg-gray-50">
-                <span>CP / Tujuan Pembelajaran</span>
+                <span>Capaian Pembelajaran</span>
                 <svg x-show="activeAccordion !== 1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="2" stroke="currentColor" class="w-5 h-5 text-gray-400">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -17,15 +17,22 @@
                 </svg>
             </button>
             <div x-show="activeAccordion === 1" x-collapse x-cloak>
-                <div class="px-5 md:px-13 pb-6 pt-1 text-sm md:text-base">
-                    <ol class="list-decimal pl-5 space-y-2 text-gray-800">
-                        <li>Menganalisis penyebab dan dampak permasalahan lingkungan berdasarkan hasil pengamatan atau
-                            informasi yang diperoleh, serta mengaitkannya dengan fenomena yang terjadi di lingkungan
-                            sekitar.</li>
-                        <li>Menentukan solusi yang logis dan realistis untuk mengatasi permasalahan lingkungan
-                            berdasarkan
-                            hasil analisis yang telah dilakukan.</li>
-                    </ol>
+                <div class="px-5 md:px-13 pb-8 pt-1 text-sm md:text-base">
+                    <p class="text-gray-800 mb-6 leading-relaxed">
+                        Murid mampu menganalisis hubungan antara komponen biotik dan abiotik dalam suatu ekosistem, serta menjelaskan pengaruh aktivitas manusia terhadap keseimbangan lingkungan, serta mampu mengemukakan solusi terhadap permasalahan lingkungan di sekitarnya melalui kegiatan observasi, analisis, dan refleksi.
+                    </p>
+
+                    <div>
+                        <h4 class="font-bold text-lg md:text-xl mb-4">Tujuan Pembelajaran</h4>
+                        <ol class="list-decimal pl-5 space-y-3 text-gray-800">
+                            <li>Menganalisis penyebab dan dampak permasalahan lingkungan berdasarkan hasil pengamatan atau
+                                informasi yang diperoleh, serta mengaitkannya dengan fenomena yang terjadi di lingkungan
+                                sekitar.</li>
+                            <li>Menentukan solusi yang logis dan realistis untuk mengatasi permasalahan lingkungan
+                                berdasarkan
+                                hasil analisis yang telah dilakukan.</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
         </div>
