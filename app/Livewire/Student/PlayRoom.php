@@ -7,6 +7,7 @@ namespace App\Livewire\Student;
 use App\Models\Node;
 use App\Models\StudentAnswer;
 use App\Models\StudentProgress;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
