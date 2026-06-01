@@ -12,7 +12,7 @@
         </a>
         <!-- Title -->
         <h1 class="text-xl md:text-2xl font-extrabold text-black absolute left-1/2 -translate-x-1/2">
-            Science Quiz
+            Kuis IPAS
         </h1>
         <div class="w-10"></div> <!-- Placeholder for balancing -->
     </div>

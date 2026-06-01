@@ -94,7 +94,7 @@
                         <img src="{{ asset('assets/icons/dashboard/profil.png') }}"
                             class="w-8 h-8 object-contain shrink-0" alt="Profile">
                         <span x-show="!sidebarCollapsed"
-                            class="whitespace-nowrap transition-opacity duration-300">Profile</span>
+                            class="whitespace-nowrap transition-opacity duration-300">Profil</span>
                     </a>
 
                     <!-- Tentang -->
@@ -125,8 +125,7 @@
                                     d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                             </svg>
                         </div>
-                        <span x-show="!sidebarCollapsed" class="whitespace-nowrap transition-opacity duration-300">Log
-                            Out</span>
+                        <span x-show="!sidebarCollapsed" class="whitespace-nowrap transition-opacity duration-300">Keluar</span>
                     </button>
                 </form>
             </div>

@@ -255,7 +255,7 @@
                         <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
                             <button @click="activeSub = activeSub === 5 ? null : 5"
                                 class="w-full flex items-center justify-between p-4 font-bold text-base text-left hover:bg-gray-50 transition-colors">
-                                <span>KEGIATAN 5 : ALAM BERUBAH, KITA WASPADA!</span>
+                                <span>KEGIATAN 5 : Alam Berubah!</span>
                                 <svg x-show="activeSub !== 5" xmlns="http://www.w3.org/2000/svg" fill="none"
                                     viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
                                     class="w-4 h-4 text-gray-400 shrink-0">
@@ -271,9 +271,7 @@
                             </button>
                             <div x-show="activeSub === 5" x-collapse x-cloak>
                                 <div class="px-4 pb-5 text-sm md:text-base space-y-4">
-                                    <p>Pernahkah kamu berpikir, mengapa udara sekarang terasa lebih panas? Atau mengapa
-                                        gunung yang penuh pohon tiba-tiba bisa longsor? Apakah itu semua karena ulah
-                                        alam sendiri, atau ada campur tangan manusia di dalamnya?</p>
+                                    <p>Pernahkah kamu berpikir, mengapa udara sekarang terasa lebih panas? Atau mengapa gunung yang penuh pohon tiba-tiba bisa longsor? <br> Apakah itu semua karena ulah alam sendiri atau ada campur tangan manusia di dalamnya?</p>
                                     <p>Ayo tonton video animasi berikut untuk memahami bagaimana lingkungan kita berubah
                                         dan apa dampaknya bagi kita!</p>
 
