@@ -2,9 +2,24 @@
 
 use App\Livewire\Student;
 use App\Livewire\Teacher;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::get('/', function (Request $request) {
+    /** @var User|null $user */
+    $user = $request->user();
+
+    if ($user) {
+        if ($user->hasRole('student')) {
+            return redirect()->route('student.dashboard');
+        } elseif ($user->hasRole('teacher')) {
+            return redirect()->route('teacher.dashboard');
+        }
+    }
+
+    return view('welcome');
+})->name('home');
 
 Route::middleware(['auth', 'role:student'])->prefix('siswa')->name('student.')->group(function () {
     Route::get('dashboard', Student\Dashboard::class)->name('dashboard');

@@ -58,7 +58,7 @@ class FinalQuizSeeder extends Seeder
                         // Check if it's an image
                         if (preg_match('/!\[(.*?)\]\((.*?)\)/', $line, $matches)) {
                             $imageName = basename($matches[2]);
-                            $currentImagePath = 'questions/' . $imageName;
+                            $currentImagePath = 'questions/'.$imageName;
                         } else {
                             $contentLines[] = '<p class="mb-4">'.e($line).'</p>';
                         }

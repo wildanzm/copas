@@ -5,6 +5,7 @@ namespace App\Livewire\Teacher;
 use App\Models\Node;
 use App\Models\StudentAnswer;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
@@ -17,7 +18,7 @@ class AnswerCheck extends Component
 
     public function mount(User $student)
     {
-        abort_unless($student->school === \Illuminate\Support\Facades\Auth::user()->school, 403, 'Unauthorized. Student not from your school.');
+        abort_unless($student->school === Auth::user()->school, 403, 'Unauthorized. Student not from your school.');
         $this->student = $student;
     }
 

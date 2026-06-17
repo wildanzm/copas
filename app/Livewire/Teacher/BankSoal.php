@@ -4,18 +4,22 @@ namespace App\Livewire\Teacher;
 
 use App\Models\Question;
 use App\Models\QuestionOption;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 #[Layout('layouts.app.teacher-sidebar')]
 #[Title('Copas | Bank Soal')]
 class BankSoal extends Component
 {
-    use \Livewire\WithFileUploads;
+    use WithFileUploads;
 
     public $questions = [];
+
     public $quizTime = '20:00';
+
     public $tempImages = [];
 
     public function mount()
@@ -51,7 +55,7 @@ class BankSoal extends Component
 
     public function addQuestion()
     {
-        \Illuminate\Support\Facades\DB::transaction(function () {
+        DB::transaction(function () {
             $newQuestion = Question::create([
                 'type' => 'final_quiz',
                 'content' => 'Pertanyaan baru...',
@@ -66,7 +70,7 @@ class BankSoal extends Component
             for ($i = 0; $i < 4; $i++) {
                 $options[] = [
                     'question_id' => $newQuestion->id,
-                    'option_text' => 'Pilihan ' . ($i + 1),
+                    'option_text' => 'Pilihan '.($i + 1),
                     'is_correct' => $i === 0,
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -76,9 +80,9 @@ class BankSoal extends Component
         });
 
         $this->loadQuestions();
-        
+
         session()->flash('message', 'Soal baru berhasil ditambahkan!');
-        
+
         $this->dispatch('swal:alert', [
             'icon' => 'success',
             'title' => 'Berhasil!',
@@ -104,7 +108,7 @@ class BankSoal extends Component
 
     public function setCorrectOption($questionId, $optionId)
     {
-        \Illuminate\Support\Facades\DB::transaction(function () use ($questionId, $optionId) {
+        DB::transaction(function () use ($questionId, $optionId) {
             QuestionOption::where('question_id', $questionId)->update(['is_correct' => false]);
             QuestionOption::where('id', $optionId)->update(['is_correct' => true]);
         });
@@ -115,7 +119,7 @@ class BankSoal extends Component
     public function updatedTempImages($value, $questionId)
     {
         $this->validate([
-            'tempImages.' . $questionId => 'image|max:2048',
+            'tempImages.'.$questionId => 'image|max:2048',
         ]);
 
         $question = Question::find($questionId);
@@ -130,7 +134,7 @@ class BankSoal extends Component
                 ],
             ]);
             $this->loadQuestions();
-            
+
             $this->dispatch('swal:alert', [
                 'icon' => 'success',
                 'title' => 'Berhasil!',
@@ -159,13 +163,13 @@ class BankSoal extends Component
     {
         $question = Question::find($questionId);
         if ($question) {
-            \Illuminate\Support\Facades\DB::transaction(function () use ($question) {
+            DB::transaction(function () use ($question) {
                 $question->options()->delete();
                 $question->delete();
             });
-            
+
             $this->loadQuestions();
-            
+
             $this->dispatch('swal:alert', [
                 'icon' => 'success',
                 'title' => 'Terhapus!',
