@@ -30,6 +30,8 @@
             <p>Program Studi Pendidikan Guru Sekolah Dasar</p>
             <p>Fakultas Keguruan dan Ilmu Pendidikan</p>
             <p>Universitas Majalengka</p>
+            <p>Pembimbing 1 : Dr. Mahpudin, M.Pd.</p>
+            <p>Pembimbing 2 : Ani Rosidah, M.Pd.</p>
         </div>
 
         <h3 class="text-xl font-black italic text-black tracking-wide mb-4 mt-6">Sumber Materi</h3>
